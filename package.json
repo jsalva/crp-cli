@@ -1,0 +1,25 @@
+{
+  "name": "crowdprocess-cli",
+  "version": "0.0.1",
+  "description": "CrowdProcess Command Line Interface",
+  "main": "index.js",
+  "scripts": {
+    "test": "tap tests/*.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/CrowdProcess/cli.git"
+  },
+  "dependencies": {
+    "optimist": "*",
+    "job-producer-client": "git+ssh://git@github.com:CrowdProcess/job-producer-client.git",
+    "read": "*",
+    "colors": "*",
+    "JSONStream": "*",
+    "multimeter": "*  "
+  },
+  "author": "CrowdProcess",
+  "license": "MIT",
+  "readmeFilename": "README.md",
+  "gitHead": "2ca0ce2cd42bbfe1943dc352eca9a5b5ae24c74b"
+}
