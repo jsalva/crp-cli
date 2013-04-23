@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 var optimist = require('optimist');
 var args = process.argv;
 var arg0 = args.shift();

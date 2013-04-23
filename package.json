@@ -3,9 +3,8 @@
   "version": "0.0.1",
   "description": "CrowdProcess Command Line Interface",
   "main": "index.js",
-  "scripts": {
-    "test": "tap tests/*.js"
-  },
+  "private": true,
+  "preferGlobal": true,
   "repository": {
     "type": "git",
     "url": "git://github.com/CrowdProcess/cli.git"
@@ -18,6 +17,7 @@
     "JSONStream": "*",
     "multimeter": "*  "
   },
+  "bin": "./index.js",
   "author": "CrowdProcess",
   "license": "MIT",
   "readmeFilename": "README.md",
