@@ -1,3 +1,3 @@
 function Run(d) {
-  return d * 2;
+  return d + d;
 }
