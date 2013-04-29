@@ -3,7 +3,7 @@ var fs         = require('fs');
 var inspect    = require('util').inspect;
 var read       = require('read');
 var JSONStream = require('JSONStream');
-var multimeter = require('multimeter')
+var multimeter = require('multimeter');
 
 var Client = require('jobs-client');
 
