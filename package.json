@@ -12,7 +12,7 @@
   "dependencies": {
     "optimist": "*",
     "job-producer-client": "git+ssh://git@github.com:CrowdProcess/job-producer-client.git",
-    "jobs-client": "git+ssh://git@github.com:CrowdProcess/jobs-client.git",
+    "job-client": "git+ssh://git@github.com:CrowdProcess/job-client.git",
     "read": "*",
     "colors": "*",
     "JSONStream": "*",
