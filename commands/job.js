@@ -93,7 +93,7 @@ function proceed(options) {
       bar.percent((acknowledged / sent) * 100);
       if (finishedSending && sent == acknowledged) {
         multi.destroy();
-        console.log('Upload terminated   ');
+        console.log('Upload terminated. Waiting for results... Hit Control-C if you wish to quit.');
       }
 
     }
