@@ -71,7 +71,7 @@ function download(args) {
       if (arrived == complete) {
         multi.destroy();
         if (args.wait) {
-          console.log('All results arrived, not waiting for new...');
+          console.log('All results arrived, now waiting for new...');
         }
       }
     }
