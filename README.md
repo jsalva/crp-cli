@@ -34,4 +34,23 @@ Progress for job QszRDfLHkjKHbyIZyFQD7GEM4yL:
   0%
   Total   : 1000
   Complete: 0
-  Pending : 1000```
+  Pending : 1000
+```
+
+## compute
+
+Help computing a job
+
+```bash
+$ crowdprocess-cli compute QszRDfLHkjKHbyIZyFQD7GEM4yL
+```
+
+## download
+
+Download results of a given job.
+
+For now the only supported output format is JSON-stream.
+
+```bash
+$ crowdprocess-cli download QszRDfLHkjKHbyIZyFQD7GEM4yL -O out.json
+```
