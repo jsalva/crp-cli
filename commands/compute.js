@@ -3,8 +3,7 @@ var fs         = require('fs');
 var inspect    = require('util').inspect;
 var JSONStream = require('JSONStream');
 
-var JobProducerClient = require('job-producer-client');
-var JobsClient = require('jobs-client');
+var JobClient = require('job-client');
 
 exports =
 module.exports = compute;
@@ -24,7 +23,7 @@ function compute(args) {
     process.exit(-1);
   }
 
-  var client = JobsClient({client_id: args.c});
+  var client = JobClient({client_id: args.c});
 
   var ee = client.jobs.compute(jobId);
 
