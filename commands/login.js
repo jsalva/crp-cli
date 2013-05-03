@@ -60,7 +60,7 @@ function doLogin(username, password, cb) {
   });
 }
 
-var cpDir = process.env.HOME + '/.crowdprocess';
+var cpDir = getUserHome() + '/.crowdprocess';
 function writeToken(token) {
   token.expires_at = token.expires_in + Date.now();
   if (!fs.existsSync(cpDir)) {
@@ -68,4 +68,7 @@ function writeToken(token) {
   }
 
   fs.writeFileSync(cpDir + '/auth_token.json', JSON.stringify(token));
+}
+function getUserHome() {
+  return process.env[(process.platform == 'win32') ? 'USERPROFILE' : 'HOME'];
 }
