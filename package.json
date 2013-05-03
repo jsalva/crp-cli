@@ -13,10 +13,12 @@
     "optimist": "*",
     "job-producer-client": "git+ssh://git@github.com:CrowdProcess/job-producer-client.git",
     "job-client": "git+ssh://git@github.com:CrowdProcess/job-client.git",
+    "auth-client": "git+ssh://git@github.com:CrowdProcess/auth-client.git",
     "read": "*",
     "colors": "*",
     "JSONStream": "*",
-    "multimeter": "*  "
+    "multimeter": "*",
+    "request": "*"
   },
   "bin": "./index.js",
   "author": "CrowdProcess",
