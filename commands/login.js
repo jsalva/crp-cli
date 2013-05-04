@@ -2,6 +2,7 @@ require('colors');
 var read = require('read');
 var fs = require('fs');
 var authClient = require('auth-client');
+var utils = require('../utils');
 
 exports =
 module.exports = login;
@@ -60,7 +61,7 @@ function doLogin(username, password, cb) {
   });
 }
 
-var cpDir = getUserHome() + '/.crowdprocess';
+var cpDir = utils.getUserHome() + '/.crowdprocess';
 function writeToken(token) {
   token.expires_at = token.expires_in + Date.now();
   if (!fs.existsSync(cpDir)) {
@@ -68,7 +69,4 @@ function writeToken(token) {
   }
 
   fs.writeFileSync(cpDir + '/auth_token.json', JSON.stringify(token));
-}
-function getUserHome() {
-  return process.env[(process.platform == 'win32') ? 'USERPROFILE' : 'HOME'];
 }

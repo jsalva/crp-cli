@@ -10,14 +10,9 @@ var Client = require('job-client');
 exports =
 module.exports = progress;
 
-module.exports.usage =
-function usage(name, args) {
-  args.
-    alias('c', 'client').
-    demand('client');
-};
+module.exports.requiresAuth = true;
 
-function progress(args) {
+function progress(args, token) {
   var jobId = args._[0];
   if (! jobId) {
     console.error('No job id specified');
@@ -25,7 +20,7 @@ function progress(args) {
   }
 
   var client = Client({
-    client_id: args.client
+    auth_token: token
   });
 
   client.jobs.progress(jobId, function(err, stats) {

@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 var optimist = require('optimist');
+var auth = require('./auth');
 var args = process.argv;
 var arg0 = args.shift();
 
@@ -25,7 +26,16 @@ var args = optimist(args);
 var module = commands.module(command);
 if (module.usage) module.usage(command, args);
 
-module(args.argv);
+var authToken;
+if (module.requiresAuth) {
+  authToken = auth.getToken();
+  if (! authToken) {
+    console.error('You need to login first'.red);
+    process.exit(-1);
+  }
+}
+
+module(args.argv, authToken);
 
 function bullet(s) {
   return '\t' + s;
