@@ -29,7 +29,7 @@ Upload terminated
 Check the progress of a given job
 
 ```bash
-$ crowdprocess-cli progress QszRDfLHkjKHbyIZyFQD7GEM4yL
+$ crowdprocess-cli progress QszRDfLHkjKHbyIZyFQD7GEM4yL --client 123
 Progress for job QszRDfLHkjKHbyIZyFQD7GEM4yL:
   0%
   Total   : 1000
