@@ -10,10 +10,7 @@ module.exports = compute;
 
 module.exports.usage =
 function usage(name, args) {
-  args.
-    usage('Usage: crowdprocess-cli' + ' ' + name + ' <job_id> -c <client_id>').
-    alias('c', 'client').
-    demand('client');
+  args.usage('Usage: crowdprocess-cli' + ' ' + name + ' <job_id>');
 };
 
 function compute(args) {
@@ -23,7 +20,7 @@ function compute(args) {
     process.exit(-1);
   }
 
-  var client = JobClient({client_id: args.c});
+  var client = JobClient();
 
   var ee = client.jobs.compute(jobId);
 
