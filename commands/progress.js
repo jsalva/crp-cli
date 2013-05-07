@@ -5,7 +5,7 @@ var read       = require('read');
 var JSONStream = require('JSONStream');
 var multimeter = require('multimeter');
 
-var Client = require('jobs-client');
+var Client = require('job-client');
 
 exports =
 module.exports = progress;
