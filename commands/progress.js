@@ -5,14 +5,14 @@ var read       = require('read');
 var JSONStream = require('JSONStream');
 var multimeter = require('multimeter');
 
-var Client = require('jobs-client');
+var Client = require('job-client');
 
 exports =
 module.exports = progress;
 
 module.exports.requiresAuth = true;
 
-function progress(args, token) {
+function progress(args, credential) {
   var jobId = args._[0];
   if (! jobId) {
     console.error('No job id specified');
@@ -20,7 +20,7 @@ function progress(args, token) {
   }
 
   var client = Client({
-    auth_token: token
+    credential: credential
   });
 
   client.jobs.progress(jobId, function(err, stats) {

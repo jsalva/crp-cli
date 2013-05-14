@@ -10,6 +10,8 @@ var JobProducerClient = require('job-producer-client');
 exports =
 module.exports = job;
 
+module.exports.requiresAuth = true;
+
 module.exports.usage =
 function usage(name, args) {
   args.
@@ -17,13 +19,11 @@ function usage(name, args) {
     demand('program-file').
     alias('d', 'data-file').
     demand('data-file').
-    alias('c', 'client').
-    demand('client').
     alias('b', 'bid').
     demand('bid');
 };
 
-function job(args) {
+function job(args, credential) {
   if (! fs.existsSync(args.p))
     error('program file not found: ' + args.p);
 
@@ -34,9 +34,9 @@ function job(args) {
 
   var options = {
     bid: args.bid,
-    client_id: args.c,
     dataFilePath: args.d,
     program: program,
+    credential: credential
   };
 
   console.log('About to create job with these options:\n%s'.yellow, inspect(options).green);
@@ -53,7 +53,8 @@ function job(args) {
 
 function proceed(options) {
   var client = JobProducerClient({
-    client_id: options.client_id.toString()});
+    credential: options.credential
+  });
 
   client.on('error', error);
 
