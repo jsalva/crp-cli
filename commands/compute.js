@@ -13,14 +13,16 @@ function usage(name, args) {
   args.usage('Usage: crowdprocess-cli' + ' ' + name + ' <job_id>');
 };
 
-function compute(args) {
+module.exports.requiresAuth = true;
+
+function compute(args, credential) {
   var jobId = args._[0];
   if (! jobId) {
     console.error('No job id specified');
     process.exit(-1);
   }
 
-  var client = JobClient();
+  var client = JobClient({credential: credential});
 
   var ee = client.jobs.compute(jobId);
 
