@@ -9,19 +9,19 @@ var JobClient = require('job-client');
 exports =
 module.exports = download;
 
+module.exports.requiresAuth = true;
+
 module.exports.usage =
 function usage(name, args) {
   args.
     usage('Usage: crowdprocess-cli' + ' ' + name + ' <job_id> -c <client_id> -O <out.json> --wait').
     alias('O', 'output-file').
     demand('output-file').
-    alias('c', 'client').
-    demand('client').
     boolean('w').
     alias('w', 'wait');
 };
 
-function download(args) {
+function download(args, credential) {
   var jobId = args._[0];
   if (! jobId) {
     console.error('No job id specified');
@@ -30,7 +30,7 @@ function download(args) {
 
   var out = fs.createWriteStream(args.O);
 
-  var client = JobClient({client_id: args.c});
+  var client = JobClient({credential: credential});
 
   client.jobs.progress(jobId, function(err, stats) {
     if (err) throw err;
