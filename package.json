@@ -18,7 +18,8 @@
     "colors": "*",
     "JSONStream": "*",
     "multimeter": "*",
-    "request": "*"
+    "request": "*",
+    "moment": "*"
   },
   "bin": "./index.js",
   "author": "CrowdProcess",
