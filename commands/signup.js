@@ -1,31 +1,27 @@
 require('colors');
 var read = require('read');
-var fs = require('fs');
-var authClient = require('auth-client');
-var utils = require('../utils');
+var adminClient = require('admin-client')();
 
-exports =
-module.exports = login;
+module.exports = signup;
 
 module.exports.usage =
 function usage(name, args) {
   args.
-    usage('crowdprocess login [<email> [<password>]]');
+    usage('crowdprocess signup [<email> [<password>]]');
 };
 
-function login(args) {
-
+function signup(args) {
   username(function(username) {
     password(function(password) {
-      doLogin(username, password, function(err) {
+      doSignup(username, password, function(err) {
         if (err) {
           console.error(err.message.red);
           return;
         }
-        console.log('Logged in'.green);
+        console.log('Signed up successfully'.green);
       });
     });
-  })
+  });
 
   function username(cb) {
     var username = args._[0];
@@ -53,20 +49,6 @@ function login(args) {
   }
 }
 
-function doLogin(username, password, cb) {
-  authClient.login(username, password, function(err, token) {
-    if (err) return cb(err);
-    writeToken(token);
-    cb();
-  });
-}
-
-var cpDir = utils.getUserHome() + '/.crowdprocess';
-function writeToken(token) {
-  token.expires_at = token.expires_in + Date.now();
-  if (!fs.existsSync(cpDir)) {
-    fs.mkdirSync(cpDir);
-  }
-
-  fs.writeFileSync(cpDir + '/auth_token.json', JSON.stringify(token));
+function doSignup(username, password, cb) {
+  adminClient.account.create(username, password, cb);
 }
