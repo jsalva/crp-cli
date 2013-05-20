@@ -22,7 +22,9 @@
     "request": "*",
     "moment": "*"
   },
-  "bin": "./index.js",
+  "bin": {
+    "crowdprocess": "./index.js"
+  },
   "author": "CrowdProcess",
   "license": "MIT",
   "readmeFilename": "README.md",
