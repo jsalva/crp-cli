@@ -20,7 +20,8 @@
     "JSONStream": "*",
     "multimeter": "*",
     "request": "*",
-    "moment": "*"
+    "moment": "*",
+    "async": "~0.2.8"
   },
   "bin": {
     "crowdprocess": "./index.js"
