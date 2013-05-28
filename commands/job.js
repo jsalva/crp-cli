@@ -74,7 +74,6 @@ function proceed(options) {
     var readFile = fs.createReadStream(options.dataFilePath, 'utf8');
     var jsonStream = JSONStream.parse([true]);
     readFile.pipe(jsonStream).pipe(stream, {end: false});
-    stream.start();
 
     var finishedSending = false;
     jsonStream.once('end', function() {
