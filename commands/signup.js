@@ -7,13 +7,14 @@ module.exports = signup;
 module.exports.usage =
 function usage(name, args) {
   args.
-    usage('crowdprocess signup [<email> [<password>]]');
+    alias('i', 'invitation').
+    usage('crowdprocess signup [<email> [<password>] [-i <invitation>]]');
 };
 
 function signup(args) {
   username(function(username) {
     password(function(password) {
-      doSignup(username, password, function(err) {
+      doSignup(username, password, args.invitation, function(err) {
         if (err) {
           console.error(err.message.red);
           return;
@@ -49,6 +50,6 @@ function signup(args) {
   }
 }
 
-function doSignup(username, password, cb) {
-  adminClient.account.create(username, password, cb);
+function doSignup(username, password, invitation, cb) {
+  adminClient.account.create(username, password, invitation, cb);
 }
