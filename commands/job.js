@@ -79,6 +79,7 @@ function proceed(options) {
     var finishedSending = false;
     jsonStream.once('end', function() {
       finishedSending = true;
+      console.log('');
     });
 
     jsonStream.on('data', function() {
