@@ -3,7 +3,7 @@
 # Install
 
 ```bash
-npm install -g crowdprocess-cli
+npm install -g crp-cli
 ```
 
 # Use
@@ -13,7 +13,7 @@ npm install -g crowdprocess-cli
 Create a job and upload some data
 
 ```bash
-$ crowdprocess-cli job -d tests/fixtures/data.json -c 123 -p tests/fixtures/program.js -b 12
+$ crowdprocess job -d tests/fixtures/data.json -c 123 -p tests/fixtures/program.js -b 12
 About to create job with these options:
 { bid: 12,
   client_id: 123,
@@ -29,7 +29,7 @@ Upload terminated
 Check the progress of a given job
 
 ```bash
-$ crowdprocess-cli progress QszRDfLHkjKHbyIZyFQD7GEM4yL --client 123
+$ crowdprocess progress QszRDfLHkjKHbyIZyFQD7GEM4yL --client 123
 Progress for job QszRDfLHkjKHbyIZyFQD7GEM4yL:
   0%
   Total   : 1000
@@ -42,7 +42,7 @@ Progress for job QszRDfLHkjKHbyIZyFQD7GEM4yL:
 Help computing a job
 
 ```bash
-$ crowdprocess-cli compute QszRDfLHkjKHbyIZyFQD7GEM4yL
+$ crowdprocess compute QszRDfLHkjKHbyIZyFQD7GEM4yL
 ```
 
 ## download
@@ -52,5 +52,5 @@ Download results of a given job.
 For now the only supported output format is JSON-stream.
 
 ```bash
-$ crowdprocess-cli download QszRDfLHkjKHbyIZyFQD7GEM4yL -O out.json
+$ crowdprocess download QszRDfLHkjKHbyIZyFQD7GEM4yL -O out.json
 ```
