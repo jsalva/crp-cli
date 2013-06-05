@@ -19,8 +19,8 @@ function usage(name, args) {
     demand('program-file').
     alias('d', 'data-file').
     demand('data-file').
-    alias('b', 'bid').
-    demand('bid');
+    alias('b', 'bid');
+    // demand('bid'); // FIXME: Don't need bids for now
 };
 
 function job(args, credential) {
@@ -33,7 +33,8 @@ function job(args, credential) {
     error('data file not found: ' + args.d);
 
   var options = {
-    bid: args.bid,
+    // FIXME: Don't need bids for now
+    bid: args.bid || 1,
     dataFilePath: args.d,
     program: program,
     credential: credential
