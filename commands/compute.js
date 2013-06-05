@@ -3,7 +3,7 @@ var fs         = require('fs');
 var inspect    = require('util').inspect;
 var JSONStream = require('JSONStream');
 
-var JobClient = require('job-client');
+var JobClient = require('crp-job-client');
 
 exports =
 module.exports = compute;

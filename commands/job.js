@@ -5,7 +5,7 @@ var read       = require('read');
 var JSONStream = require('JSONStream');
 var multimeter = require('multimeter')
 
-var JobProducerClient = require('job-producer-client');
+var JobProducerClient = require('crp-job-producer-client');
 
 exports =
 module.exports = job;

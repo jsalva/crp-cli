@@ -1,6 +1,6 @@
 require('colors');
 
-var Client = require('job-client');
+var Client = require('crp-job-client');
 
 exports =
 module.exports = progress;

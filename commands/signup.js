@@ -1,6 +1,6 @@
 require('colors');
 var read = require('read');
-var adminClient = require('admin-client')();
+var adminClient = require('crp-admin-client')();
 
 module.exports = signup;
 

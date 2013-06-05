@@ -4,7 +4,7 @@ var inspect    = require('util').inspect;
 var JSONStream = require('JSONStream');
 var multimeter = require('multimeter');
 
-var JobClient = require('job-client');
+var JobClient = require('crp-job-client');
 
 exports =
 module.exports = download;

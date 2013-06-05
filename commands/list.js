@@ -1,7 +1,7 @@
 require('colors');
 var async = require('async');
 var moment = require('moment');
-var Client = require('job-client');
+var Client = require('crp-job-client');
 
 exports =
 module.exports = list;

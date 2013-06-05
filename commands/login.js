@@ -1,7 +1,7 @@
 require('colors');
 var read = require('read');
 var fs = require('fs');
-var authClient = require('auth-client');
+var authClient = require('crp-auth-client');
 var utils = require('../utils');
 
 exports =
