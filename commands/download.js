@@ -14,7 +14,7 @@ module.exports.requiresAuth = true;
 module.exports.usage =
 function usage(name, args) {
   args.
-    usage('Usage: crowdprocess-cli' + ' ' + name + ' <job_id> -c <client_id> -O <out.json> --wait').
+    usage('Usage: crowdprocess-cli' + ' ' + name + ' <task_id> -O <out.json> --wait').
     alias('O', 'output-file').
     demand('output-file').
     boolean('w').
@@ -35,7 +35,7 @@ function download(args, credential) {
   client.jobs.progress(jobId, function(err, stats) {
     if (err) throw err;
 
-    console.error('This job has %d data units', stats.total);
+    console.error('This task has %d data units', stats.total);
     var complete = stats.complete;
     if (! complete) {
       console.error('0 results — quitting.'.red);
