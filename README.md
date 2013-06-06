@@ -12,11 +12,16 @@ npm install -g crp-cli
 
 ```bash
 $ crowdprocess signup -i <invite>
+Password: 
+Logged in
 ```
 
 ## login
 ```bash
 $ crowdprocess login
+Email: email@example.com
+Password: 
+Logged in
 ```
 
 ## task
