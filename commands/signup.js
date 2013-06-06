@@ -8,8 +8,9 @@ module.exports = signup;
 module.exports.usage =
 function usage(name, args) {
   args.
-    alias('i', 'invitation').
-    usage('crowdprocess signup [<email> [<password>] [-i <invitation>]]');
+    alias('invitation', 'i').
+    demand('invitation').
+    usage('crowdprocess signup -i <invitation> [<email>] [<password>]');
 };
 
 function signup(args) {
