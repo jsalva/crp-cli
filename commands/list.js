@@ -18,30 +18,29 @@ function list(args, credential) {
     var percentage = 0;
 
     if (jobs.length) {
-      console.log('created at\t\tbid\t\ttotal\t\tcomplete\tpending\t\tID');
+      console.log('created at\t\ttotal\t\tcomplete\tpending\t\tID');
     }
 
-    jobs.sort(sortJob);
+    jobs.sort(sortTask);
     async.map(jobs.map(prop('_id')), client.jobs.progress, function(err, progresses) {
       if (err) return console.error(err);
 
       jobs.forEach(show);
 
-      function show(job, i) {
-        var createdAt = job.created_at;
+      function show(task, i) {
+        var createdAt = task.created_at;
         if (createdAt) createdAt = moment(createdAt)
-        if (createdAt) createdAt = createdAt.format('YYYY-MM-DD');
+        if (createdAt) createdAt = createdAt.format('hh:mm YY-MM-DD');
         var progress = progresses[i];
         var color = 'yellow';
         var complete = progress.total == progress.complete;
         if (complete) color = 'green';
-        console.log('%s\t\t%s\t\t%d\t\t%d\t\t%d\t\t%s'[color],
+        console.log('%s\t\t%d\t\t%d\t\t%d\t\t%s'[color],
           createdAt,
-          job.bid,
           progress.total,
           progress.complete,
           progress.pending,
-          job._id);
+          task._id);
       }
     });
   });
@@ -54,6 +53,6 @@ function prop(p) {
   };
 }
 
-function sortJob(b, a) {
+function sortTask(b, a) {
   return (a.created_at || 0) - (b.created_at || 0);
 }
