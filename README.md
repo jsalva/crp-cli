@@ -33,7 +33,7 @@ Logged in
 Create a task and upload some data
 
 ```bash
-$ crowdprocess task -d tests/fixtures/data.json -c 123 -p tests/fixtures/program.js -b 12
+$ crowdprocess task -d tests/fixtures/data.json -p tests/fixtures/program.js
 About to create task with these options:
 { bid: 12,
   client_id: 123,
@@ -58,19 +58,19 @@ created at          total       complete        pending      ID
 Check the progress of a given task
 
 ```bash
-$ crowdprocess progress QszRDfLHkjKHbyIZyFQD7GEM4yL --client 123
+$ crowdprocess progress QszRDfLHkjKHbyIZyFQD7GEM4yL
 Progress for task QszRDfLHkjKHbyIZyFQD7GEM4yL:
-  0%
+  100%
   Total   : 1000
-  Complete: 0
-  Pending : 1000
+  Complete: 1000
+  Pending : 0
 ```
 
 ## download
 
 Download results of a given task.
 
-For now the only supported output format is JSON-stream.
+Output format is JSON.
 
 ```bash
 $ crowdprocess download QszRDfLHkjKHbyIZyFQD7GEM4yL -O results.json
