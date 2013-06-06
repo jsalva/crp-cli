@@ -3,7 +3,6 @@
   "version": "0.1.0",
   "description": "CrowdProcess Command Line Interface",
   "main": "index.js",
-  "private": true,
   "preferGlobal": true,
   "repository": {
     "type": "git",
