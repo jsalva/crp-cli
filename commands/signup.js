@@ -1,6 +1,7 @@
 require('colors');
 var read = require('read');
 var adminClient = require('crp-admin-client')();
+var login = require('./login');
 
 module.exports = signup;
 
@@ -20,6 +21,7 @@ function signup(args) {
           return;
         }
         console.log('Signed up successfully'.green);
+        login({_: [ username, password ]});
       });
     });
   });
