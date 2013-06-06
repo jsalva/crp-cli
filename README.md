@@ -3,7 +3,7 @@
 # Install
 
 ```bash
-npm install -g crp-cli
+npm install -g crowdprocess-cli
 ```
 
 # Use
