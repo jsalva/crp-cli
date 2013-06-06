@@ -26,10 +26,10 @@ Logged in
 
 ## task
 
-Create a task and upload some data
+Create a task, with a program.js and a data.json.
 
 ```bash
-$ crowdprocess task -d tests/fixtures/data.json -p tests/fixtures/program.js
+$ crowdprocess task -d data.json -p program.js
 About to create task with these options:
 { bid: 12,
   client_id: 123,
@@ -38,6 +38,25 @@ About to create task with these options:
 Confirm? [y,n] (y)
 Task successfully created with id QszRDfLHkjKHbyIZyFQD7GEM4yL
 Upload terminated
+```
+
+Sample program.js:
+
+```js
+function Run(d) {
+  return d + d;
+}
+```
+
+Sample data.json
+```json
+[
+  "1",
+  "2",
+  ...
+  "999",
+  "1000"
+]
 ```
 
 ## list
