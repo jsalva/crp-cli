@@ -8,49 +8,61 @@ npm install -g crp-cli
 
 # Use
 
-## job
-
-Create a job and upload some data
+## signup
 
 ```bash
-$ crowdprocess job -d tests/fixtures/data.json -c 123 -p tests/fixtures/program.js -b 12
-About to create job with these options:
+$ crowdprocess signup -i <invite>
+```
+
+## login
+```bash
+$ crowdprocess login
+```
+
+## task
+
+Create a task and upload some data
+
+```bash
+$ crowdprocess task -d tests/fixtures/data.json -c 123 -p tests/fixtures/program.js -b 12
+About to create task with these options:
 { bid: 12,
   client_id: 123,
   dataFilePath: 'tests/fixtures/data.json',
   program: 'function Run(d) {\n  return d * 2;\n}' }
 Confirm? [y,n] (y)
-Job successfully created with id QszRDfLHkjKHbyIZyFQD7GEM4yL
+Task successfully created with id QszRDfLHkjKHbyIZyFQD7GEM4yL
 Upload terminated
+```
+
+## list
+
+
+```bash
+$ crowdprocess list
+created at          total       complete        pending      ID
+04:44 13-05-31      1000        665             335          QszRDfLHkjKHbyIZyFQD7GEM4yL
 ```
 
 ## progress
 
-Check the progress of a given job
+Check the progress of a given task
 
 ```bash
 $ crowdprocess progress QszRDfLHkjKHbyIZyFQD7GEM4yL --client 123
-Progress for job QszRDfLHkjKHbyIZyFQD7GEM4yL:
+Progress for task QszRDfLHkjKHbyIZyFQD7GEM4yL:
   0%
   Total   : 1000
   Complete: 0
   Pending : 1000
 ```
 
-## compute
-
-Help computing a job
-
-```bash
-$ crowdprocess compute QszRDfLHkjKHbyIZyFQD7GEM4yL
-```
-
 ## download
 
-Download results of a given job.
+Download results of a given task.
 
 For now the only supported output format is JSON-stream.
 
 ```bash
-$ crowdprocess download QszRDfLHkjKHbyIZyFQD7GEM4yL -O out.json
+$ crowdprocess download QszRDfLHkjKHbyIZyFQD7GEM4yL -O results.json
 ```
