@@ -40,7 +40,11 @@ function job(args, credential) {
     credential: credential
   };
 
-  console.log('About to create a task with these options:\n%s'.yellow, inspect(options).green);
+  console.log('About to create a task with these options:\n%s'.yellow, inspect(
+    args.debug
+    ? options
+    : { dataFile: args.d, programFile: args.p }).green);
+
   read({
     prompt: 'Confirm? [y,n]',
     default: 'y'
