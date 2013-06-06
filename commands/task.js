@@ -40,7 +40,7 @@ function job(args, credential) {
     credential: credential
   };
 
-  console.log('About to create job with these options:\n%s'.yellow, inspect(options).green);
+  console.log('About to create a task with these options:\n%s'.yellow, inspect(options).green);
   read({
     prompt: 'Confirm? [y,n]',
     default: 'y'
@@ -66,7 +66,7 @@ function proceed(options) {
   });
 
   client.once('job created', function(jobId) {
-    console.log('Job successfully created with id %s', jobId);
+    console.log('Task successfully created with id %s', jobId);
 
     var sent = 0;
     var acknowledged = 0;
