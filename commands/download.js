@@ -14,9 +14,9 @@ module.exports.requiresAuth = true;
 module.exports.usage =
 function usage(name, args) {
   args.
-    usage('Usage: crowdprocess-cli' + ' ' + name + ' <task_id> -O <out.json> --wait').
+    usage('Usage: crowdprocess' + ' ' + name + ' <job_id> [-O <results.json>] --wait').
     alias('O', 'output-file').
-    demand('output-file').
+    default('output-file', 'results.json').
     boolean('w').
     alias('w', 'wait');
 };
@@ -58,6 +58,7 @@ function download(args, credential) {
     });
 
     encoder.once('end', function() {
+      console.log('Saved to', args.O);
       finishedSending = true;
     });
 

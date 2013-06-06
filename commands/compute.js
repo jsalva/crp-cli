@@ -10,7 +10,7 @@ module.exports = compute;
 
 module.exports.usage =
 function usage(name, args) {
-  args.usage('Usage: crowdprocess-cli' + ' ' + name + ' <job_id>');
+  args.usage('Usage: crowdprocess' + ' ' + name + ' <job_id>');
 };
 
 module.exports.requiresAuth = true;

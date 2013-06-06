@@ -14,7 +14,7 @@ var command = args.shift();
 var commands = require('./commands');
 
 if (! command) {
-  console.error('Usage: ' + arg0 + ' <command>\n' +
+  console.error('Usage: crowdprocess <command>\n' +
     'List of available commands:\n' +
     commands.list().map(bullet).join('\n'));
   process.exit(-1);
