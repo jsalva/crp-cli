@@ -5,6 +5,7 @@ var read       = require('read');
 var JSONStream = require('JSONStream');
 var multimeter = require('multimeter')
 
+var JobClient = require('crp-job-client');
 var JobProducerClient = require('crp-job-producer-client');
 
 exports =
@@ -57,33 +58,38 @@ function job(args, credential) {
 };
 
 function proceed(options) {
-  var client = JobProducerClient({
+  var jobClient = JobClient({
     credential: options.credential
   });
 
-  client.on('error', error);
-
-  var stream =
-  client.createJob({
+  jobClient.jobs.create({
     bid: options.bid,
     program: options.program
-  });
+  }, afterJobCreated);
 
-  client.once('job created', function(jobId) {
-    console.log('Task successfully created with id %s', jobId);
+  function afterJobCreated(err, job) {
+    if (err) throw err;
+
+    var stream = JobProducerClient({
+      credential: options.credential,
+      jobId: job._id
+    });
+
+    stream.on('error', error);
+
+    var readFile = fs.createReadStream(options.dataFilePath, 'utf8');
+    var jsonStream = JSONStream.parse([true]);
+    readFile.pipe(jsonStream).pipe(stream, {end: false});
 
     var sent = 0;
     var acknowledged = 0;
     var multi = multimeter(process);
     var bar = multi.rel(0, -1);
-    var readFile = fs.createReadStream(options.dataFilePath, 'utf8');
-    var jsonStream = JSONStream.parse([true]);
-    readFile.pipe(jsonStream).pipe(stream, {end: false});
 
     var finishedSending = false;
     jsonStream.once('end', function() {
       finishedSending = true;
-      console.log('');
+      updateBar();
     });
 
     jsonStream.on('data', function() {
@@ -97,16 +103,14 @@ function proceed(options) {
     });
 
     function updateBar() {
-      bar.percent((acknowledged / sent) * 100);
+      var percent = Math.round((acknowledged / sent) * 100);
+      bar.percent(percent);
       if (finishedSending && sent == acknowledged) {
         multi.destroy();
         console.log('Upload terminated. Waiting for results... Hit Control-C if you wish to quit.');
       }
-
     }
-
-  });
-
+  }
 };
 
 function error(err) {
