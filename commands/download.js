@@ -62,11 +62,6 @@ function download(args, credential) {
       finishedSending = true;
     });
 
-    encoder.on('data', function() {
-      arrived ++;
-      updateBar();
-    });
-
     function updateBar() {
       bar.percent((arrived / complete) * 100);
       if (arrived == complete) {
