@@ -22,16 +22,15 @@ function list(args, credential) {
     }
 
     jobs.sort(sortTask);
-    async.map(jobs.map(prop('_id')), client.jobs.progress, function(err, progresses) {
-      if (err) return console.error(err);
+    async.eachSeries(jobs, show);
 
-      jobs.forEach(show);
+    function show(task, done) {
+      client.jobs.progress(task._id, function(err, progress) {
+        if (err) return console.error(err);
 
-      function show(task, i) {
         var createdAt = task.created_at;
         if (createdAt) createdAt = moment(createdAt)
         if (createdAt) createdAt = createdAt.format('hh:mm YY-MM-DD');
-        var progress = progresses[i];
         var color = 'yellow';
         var complete = progress.total == progress.complete;
         if (complete) color = 'green';
@@ -41,8 +40,9 @@ function list(args, credential) {
           progress.complete,
           progress.pending,
           task._id);
-      }
-    });
+        done();
+      });
+    }
   });
 
 }
