@@ -18,13 +18,14 @@ function list(args, credential) {
     var percentage = 0;
 
     if (jobs.length) {
-      console.log('created at\t\ttotal\t\tcomplete\tpending\t\tID');
+      console.log('created at\t\tstate\t\ttotal\t\terrors\t\tcomplete\tpending\t\tID');
     }
 
     jobs.sort(sortTask);
     async.eachSeries(jobs, show);
 
     function show(task, done) {
+      var state = task.state || 'active';
       client.jobs.progress(task._id, function(err, progress) {
         if (err) return console.error(err);
 
@@ -33,16 +34,24 @@ function list(args, credential) {
         if (createdAt) createdAt = createdAt.format('hh:mm YY-MM-DD');
         var color = 'yellow';
         var complete = progress.total == progress.complete;
-        if (complete) color = 'green';
-        console.log('%s\t\t%d\t\t%d\t\t%d\t\t%s'[color],
+        if (complete) {
+          if (state == 'active') state = 'complete';
+          if (! progress.errors && state != 'canceled') color = 'green';
+          else color = 'red';
+        }
+        console.log('%s\t\t%s\t\t%d\t\t%s\t\t%d\t\t%d\t\t%s'[color],
           createdAt,
+          state,
           progress.total,
+          progress.errors,
           progress.complete,
           progress.pending,
           task._id);
         done();
+
       });
     }
+
   });
 
 }
