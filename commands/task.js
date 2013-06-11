@@ -110,6 +110,10 @@ function proceed(options) {
       if (! finishedSending || sent != acknowledged) {
         console.error('Stream ended prematurely.'.red);
         console.error('Only acknowledged %d of the %d sent.', acknowledged, sent);
+      } else {
+        console.log('100%'.green);
+        console.log('%d data units uploaded successfully'.green, sent);
+        console.log('You can use `crowdprocess progress %s` to monitor job progress.', job._id);
       }
     });
 
@@ -119,9 +123,6 @@ function proceed(options) {
       if (finishedSending && sent == acknowledged) {
         multi.destroy();
         stream.end();
-        console.log('100%'.green);
-        console.log('%d data units uploaded successfully'.green, sent);
-        console.log('You can use `crowdprocess progress %s` to monitor job progress.', job._id);
       }
     }
   }
