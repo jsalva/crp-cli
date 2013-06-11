@@ -27,6 +27,7 @@ function progress(args, credential) {
     console.log('\tTotal   :\t%s', stats.total.toString().green);
     console.log('\tComplete:\t%s', stats.complete.toString().green);
     console.log('\tPending :\t%s', stats.pending.toString().green);
+    console.log('\tErrors: :\t%s', stats.errors.toString().green);
   });
 
 }
