@@ -22,8 +22,18 @@ function faults(args, credential) {
   client.jobs(jobId).faults.getAll(function(err, faults) {
     if (err) throw err;
     if (! faults.length) console.log('0 faults'.green);
-    else console.log('Found %d faults:'.yellow, faults.length);
-    util.inspect(faults);
+    else console.log('Found %d faults in task %s:'.yellow, faults.length, jobId);
+    faults = faults.map(function(fault) {
+      fault = fault.fault;
+      try {
+        fault = JSON.parse(fault);
+      } catch(_) { }
+      if (fault.stack && typeof fault.stack == 'string') {
+        fault.stack = fault.stack.split('\n');
+      }
+      return fault;
+    });
+    console.log(util.inspect(faults, {colors: true}));
   });
 
 }
