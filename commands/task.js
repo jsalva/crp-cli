@@ -82,6 +82,7 @@ function proceed(options) {
 
     var readFile = fs.createReadStream(options.dataFilePath, 'utf8');
     var jsonStream = JSONStream.parse([true]);
+
     readFile.pipe(jsonStream).pipe(stream, {end: false});
 
     var sent = 0;
@@ -103,6 +104,13 @@ function proceed(options) {
     stream.on('acknowledge', function() {
       acknowledged ++;
       updateBar();
+    });
+
+    stream.once('end', function() {
+      if (sent != acknowledged) {
+        console.error('Stream ended prematurely.'.red);
+        console.error('Only acknowledged %d of the %d sent.', acknowledged, sent);
+      }
     });
 
     function updateBar() {
