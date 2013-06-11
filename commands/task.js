@@ -70,6 +70,9 @@ function proceed(options) {
   function afterJobCreated(err, job) {
     if (err) throw err;
 
+    console.log('Task successfully created.\nTask Id: ', job._id.yellow);
+    console.log('Data units upload progress:');
+
     var stream = JobProducerClient({
       credential: options.credential,
       jobId: job._id
@@ -107,7 +110,10 @@ function proceed(options) {
       bar.percent(percent);
       if (finishedSending && sent == acknowledged) {
         multi.destroy();
-        console.log('Upload terminated. Waiting for results... Hit Control-C if you wish to quit.');
+        stream.end();
+        console.log('100%'.green);
+        console.log('All data units uploaded successfully'.green);
+        console.log('You can use `crowdprocess progress %s` to monitor job progress.', job._id);
       }
     }
   }
