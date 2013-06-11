@@ -16,7 +16,7 @@ To get an invite all you have to do is ask [@CrowdProcess](http://twitter.com/Cr
 
 ```bash
 $ crowdprocess signup -i <invite>
-Password: 
+Password:
 Logged in
 ```
 
@@ -24,7 +24,7 @@ Logged in
 ```bash
 $ crowdprocess login
 Email: email@example.com
-Password: 
+Password:
 Logged in
 ```
 
@@ -68,8 +68,12 @@ Sample data.json
 
 ```bash
 $ crowdprocess list
-created at          total       complete        pending      ID
-04:44 13-05-31      1000        665             335          QszRDfLHkjKHbyIZyFQD7GEM4yL
+created at    state   total   errors    complete  pending   ID
+07:01 13-06-11    complete    2   0   2   0   EFf6EHhiQG9BZWStX61VyHaR11s
+06:59 13-06-11    complete    2   0   2   0   CfVxrNRklI9trHCnLm8JUo5PrGK
+06:57 13-06-11    complete    2   0   2   0   4B7WkfSQFYNdeHVPxAiLhs2ecpr
+06:50 13-06-11    complete    2   0   2   0   CCucVebIQhYZHxiDLXvq0rkVKRh
+06:47 13-06-11    complete    10000   1   10000   0   4GoVWuqanamtegaofKPlbYJ2r1F
 ```
 
 ## progress
@@ -83,6 +87,7 @@ Progress for task QszRDfLHkjKHbyIZyFQD7GEM4yL:
   Total   : 1000
   Complete: 1000
   Pending : 0
+  Errors  : 0
 ```
 
 ## download
@@ -93,4 +98,13 @@ Output format is JSON.
 
 ```bash
 $ crowdprocess download QszRDfLHkjKHbyIZyFQD7GEM4yL -O results.json
+```
+
+## faults
+
+Get all faults that happened while processing a task
+
+```bash
+$ crowdprocess faults QszRDfLHkjKHbyIZyFQD7GEM4yL -O results.json
+...
 ```
