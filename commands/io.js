@@ -23,9 +23,9 @@ function usage(name, args) {
 var producerStream;
 var clientStream;
 
-var sent;
-var acknowledged;
-var arrived;
+var sent = 0;
+var acknowledged = 0;
+var arrived = 0;
 
 function io(args, credential) {
   if (! fs.existsSync(args.p))
