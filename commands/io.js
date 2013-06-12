@@ -61,9 +61,6 @@ function io(args, credential) {
 
     getResults(jobId);
 
-    var sent = 0;
-    var acknowledged = 0;
-
     var finishedSending = false;
     jsonParser.once('end', function() {
       finishedSending = true;
