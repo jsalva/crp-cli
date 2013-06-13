@@ -57,7 +57,9 @@ function io(args, credential) {
 
     var dataStream = process.stdin;
     var jsonParser = JSONStream.parse([true]);
-    dataStream.pipe(jsonParser).pipe(producerStream, {end: false});
+    dataStream
+      .pipe(jsonParser)
+      .pipe(producerStream, {end: false});
 
     getResults(jobId);
 
