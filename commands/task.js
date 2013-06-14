@@ -133,5 +133,4 @@ function error(err) {
     err = err.message;
 
   console.error(err);
-  process.exit(-1);
 }
