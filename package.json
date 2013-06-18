@@ -8,6 +8,9 @@
     "type": "git",
     "url": "git://github.com/CrowdProcess/cli.git"
   },
+  "engines" : {
+    "node" : ">=0.10" 
+  },
   "dependencies": {
     "optimist": "*",
     "crp-job-producer-client": "git://github.com/CrowdProcess/crp-job-producer-client.git",
