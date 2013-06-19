@@ -1,4 +1,5 @@
 require('colors');
+var assert = require('assert');
 var fs         = require('fs');
 var inspect    = require('util').inspect;
 var read       = require('read');
@@ -69,6 +70,8 @@ function proceed(options) {
 
   function afterJobCreated(err, job) {
     if (err) throw err;
+
+    assert('job', 'No task has been created.');
 
     console.log('Task successfully created.\nTask Id: ', job._id.yellow);
     console.log('Data units upload progress:');
