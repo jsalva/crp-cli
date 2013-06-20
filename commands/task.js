@@ -21,7 +21,8 @@ function usage(name, args) {
     demand('program-file').
     alias('d', 'data-file').
     demand('data-file').
-    alias('b', 'bid');
+    alias('b', 'bid').
+    alias('y', 'confirm');
     // demand('bid'); // FIXME: Don't need bids for now
 };
 
@@ -41,6 +42,9 @@ function job(args, credential) {
     program: program,
     credential: credential
   };
+
+  if (args.y)
+    return proceed(options);
 
   console.log('About to create a task with these options:\n%s'.yellow, inspect(
     args.debug
