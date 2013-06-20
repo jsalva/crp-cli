@@ -1,6 +1,6 @@
 {
   "name": "crowdprocess-cli",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "CrowdProcess Command Line Interface",
   "main": "index.js",
   "preferGlobal": true,
@@ -24,7 +24,8 @@
     "multimeter": "*",
     "request": "*",
     "moment": "*",
-    "async": "~0.2.8"
+    "async": "~0.2.8",
+    "bugsnag": "*"
   },
   "bin": {
     "crowdprocess": "./index.js"
