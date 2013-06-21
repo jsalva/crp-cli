@@ -134,12 +134,12 @@ function logError(err) {
 }
 
 function error(err) {
-  logError(err)
+  logError(err);
   process.exit(-1);
 }
 
 function exit() {
-  console.log('\n');
+  multi.write('\n\n');
   if (! finishedSending || sent !== acknowledged) {
     multi.write('Producer stream ended prematurely.\n');
     multi.write('Only acknowledged '+acknowledged+' of the '+sent+' sent.\n');
@@ -150,15 +150,15 @@ function exit() {
   }
 
   if (finishedSending && arrived === acknowledged)
-    multi.write('\nAll done.\n');
+    multi.write('\nAll done.');
 
+  multi.write('\n');
   multi.destroy();
-  console.log('Closing streams... about to exit...');
   if (clientStream)
     clientStream.destroy();
   if (producerStream)
     producerStream.end();
+  process.exit();
 }
 
-multi.on('^C', exit);
 process.on('SIGINT', exit);
