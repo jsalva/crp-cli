@@ -134,10 +134,7 @@ function logError(err) {
 }
 
 function error(err) {
-  if (typeof err != 'string')
-    err = err.message;
-
-  console.error('\n', err);
+  logError(err)
   process.exit(-1);
 }
 
