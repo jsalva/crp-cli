@@ -8,13 +8,13 @@ if (version[0] == 0 && version[1] < 10) {
   process.exit(1);
 }
 
-var errorNotify = require('./error-notify');
+//var errorNotify = require('./error-notify');
 var optimist = require('optimist');
 var auth = require('./auth');
 var args = process.argv;
 var arg0 = args.shift();
 
-args.shift()
+args.shift();
 
 var command = args.shift();
 
