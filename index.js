@@ -2,6 +2,13 @@
 
 if (! process.env.NODE_ENV) process.env.NODE_ENV = 'production';
 
+var version = process.versions.node.split('.');
+if (version[0] == 0 && version[1] < 10) {
+  console.error('Error: Cannot run in Node.js version < 0.10');
+  process.exit(1);
+}
+
+var errorNotify = require('./error-notify');
 var optimist = require('optimist');
 var auth = require('./auth');
 var args = process.argv;

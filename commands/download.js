@@ -73,7 +73,7 @@ function download(args, credential) {
         bar.percent((arrived / complete) * 100);
         if (arrived == complete) {
           multi.destroy();
-          if (args.wait) {
+          if (args.wait && ! args.O) {
             console.log('All results arrived, now waiting for new...');
           }
         }

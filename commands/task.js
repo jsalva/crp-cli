@@ -1,4 +1,5 @@
 require('colors');
+var assert = require('assert');
 var fs         = require('fs');
 var inspect    = require('util').inspect;
 var read       = require('read');
@@ -20,7 +21,8 @@ function usage(name, args) {
     demand('program-file').
     alias('d', 'data-file').
     demand('data-file').
-    alias('b', 'bid');
+    alias('b', 'bid').
+    alias('y', 'confirm');
     // demand('bid'); // FIXME: Don't need bids for now
 };
 
@@ -40,6 +42,9 @@ function job(args, credential) {
     program: program,
     credential: credential
   };
+
+  if (args.y)
+    return proceed(options);
 
   console.log('About to create a task with these options:\n%s'.yellow, inspect(
     args.debug
@@ -69,6 +74,8 @@ function proceed(options) {
 
   function afterJobCreated(err, job) {
     if (err) throw err;
+
+    assert('job', 'No task has been created.');
 
     console.log('Task successfully created.\nTask Id: ', job._id.yellow);
     console.log('Data units upload progress:');
@@ -133,5 +140,4 @@ function error(err) {
     err = err.message;
 
   console.error(err);
-  process.exit(-1);
 }

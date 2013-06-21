@@ -105,6 +105,6 @@ $ crowdprocess download QszRDfLHkjKHbyIZyFQD7GEM4yL -O results.json
 Get all faults that happened while processing a task
 
 ```bash
-$ crowdprocess faults QszRDfLHkjKHbyIZyFQD7GEM4yL -O results.json
+$ crowdprocess faults QszRDfLHkjKHbyIZyFQD7GEM4yL
 ...
 ```
