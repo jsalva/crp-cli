@@ -2,6 +2,7 @@ require('colors');
 var util = require('util');
 
 var Client = require('crp-job-client');
+var error = require('../error');
 
 exports =
 module.exports = faults;
@@ -12,7 +13,7 @@ function faults(args, credential) {
   var jobId = args._[0];
   if (! jobId) {
     console.error('No task id specified');
-    process.exit(-1);
+    process.exit(1);
   }
 
   var client = Client({
@@ -20,7 +21,7 @@ function faults(args, credential) {
   });
 
   client.jobs(jobId).faults.getAll(function(err, faults) {
-    if (err) throw err;
+    if (err) error(err);
     if (! faults.length) console.log('0 faults'.green);
     else console.log('Found %d faults in task %s:'.yellow, faults.length, jobId);
     faults = faults.map(function(fault) {

@@ -17,6 +17,7 @@ var context = 'crowdprocess-cli';
 bugsnag.register(apiKey, bugsnagOptions);
 
 process.on('uncaughtException', function(err) {
+  console.error(err.stack || err);
   var meta = {};
 
   var token = auth.getToken();

@@ -1,6 +1,7 @@
 require('colors');
 var read = require('read');
 var AdminClient = require('crp-admin-client');
+var error = require('../error');
 
 module.exports = invite;
 
@@ -16,8 +17,7 @@ function usage(name, args) {
 function invite(args, credential) {
   var adminClient = AdminClient({credential: credential});
   adminClient.invitations.create(function(err, invitation) {
-    if (err)
-      return console.error(err.message.red);
+    if (err) error(err);
 
     console.error('Invitation code: %s', invitation.green);
   });
