@@ -1,6 +1,7 @@
 require('colors');
 
 var Client = require('crp-job-client');
+var error = require('../error');
 
 exports =
 module.exports = progress;
@@ -19,7 +20,7 @@ function progress(args, credential) {
   });
 
   client.jobs.progress(jobId, function(err, stats) {
-    if (err) throw err;
+    if (err) error(err);
     var percentage = 0;
     if (stats.total) percentage = (stats.complete / stats.total) * 100;
     console.log('Progress for task %s:', jobId.yellow);

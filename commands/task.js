@@ -26,13 +26,18 @@ function usage(name, args) {
 };
 
 function job(args, credential) {
-  if (! fs.existsSync(args.p))
-    error('program file not found: ' + args.p);
+  if (! fs.existsSync(args.p)) {
+    console.error('program file not found: ' + args.p);
+    process.exit(1);
+  }
 
   var program = fs.readFileSync(args.p, 'utf8');
 
-  if (! fs.existsSync(args.d))
-    error('data file not found: ' + args.d);
+  if (! fs.existsSync(args.d)) {
+    console.error('data file not found: ' + args.d);
+    process.exit(1);
+  }
+    
 
   var options = {
     // FIXME: Don't need bids for now

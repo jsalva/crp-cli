@@ -2,6 +2,7 @@ require('colors');
 var async = require('async');
 var moment = require('moment');
 var Client = require('crp-job-client');
+var error = require('../error');
 
 exports =
 module.exports = list;
@@ -27,7 +28,7 @@ function list(args, credential) {
     function show(task, done) {
       var state = task.state || 'active';
       client.jobs.progress(task._id, function(err, progress) {
-        if (err) return console.error(err);
+        if (err) error(err);
 
         var createdAt = task.created_at;
         if (createdAt) createdAt = moment(createdAt)

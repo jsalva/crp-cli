@@ -3,6 +3,7 @@ var read = require('read');
 var fs = require('fs');
 var authClient = require('crp-auth-client');
 var utils = require('../utils');
+var error = require('../error');
 
 exports =
 module.exports = login;
@@ -18,10 +19,7 @@ function login(args) {
   username(function(username) {
     password(function(password) {
       doLogin(username, password, function(err) {
-        if (err) {
-          console.error(err.message.red);
-          return;
-        }
+        if (err) error(err);
         console.log('Logged in'.green);
       });
     });
@@ -34,7 +32,7 @@ function login(args) {
     read({
       prompt: 'Email:'
     }, function(err, username) {
-      if (err) throw err;
+      if (err) error(err);
       cb(username);
     });
   }
@@ -47,7 +45,7 @@ function login(args) {
       prompt: 'Password:',
       silent: true
     }, function(err, password) {
-      if (err) throw err;
+      if (err) error(err);
       cb(password);
     });
   }

@@ -4,6 +4,7 @@ var inspect    = require('util').inspect;
 var JSONStream = require('JSONStream');
 
 var JobClient = require('crp-job-client');
+var error = require('../error');
 
 exports =
 module.exports = compute;
@@ -18,8 +19,7 @@ module.exports.requiresAuth = true;
 function compute(args, credential) {
   var jobId = args._[0];
   if (! jobId) {
-    console.error('No job id specified');
-    process.exit(-1);
+    error('No job id specified');
   }
 
   var client = JobClient({credential: credential});

@@ -2,6 +2,7 @@ require('colors');
 var read = require('read');
 var adminClient = require('crp-admin-client')();
 var login = require('./login');
+var error = require('../error');
 
 module.exports = signup;
 
@@ -15,12 +16,12 @@ function usage(name, args) {
 
 function signup(args) {
   username(function(username) {
+    if (! username) error('Needs user name');
     password(function(password) {
+      if (! password) error('Needs password');
+
       doSignup(username, password, args.invitation, function(err) {
-        if (err) {
-          console.error(err.message.red);
-          return;
-        }
+        if (err) error(err);
         console.log('Signed up successfully'.green);
         login({_: [ username, password ]});
       });
@@ -34,7 +35,6 @@ function signup(args) {
     read({
       prompt: 'Email:'
     }, function(err, username) {
-      if (err) throw err;
       cb(username);
     });
   }
@@ -47,7 +47,6 @@ function signup(args) {
       prompt: 'Password:',
       silent: true
     }, function(err, password) {
-      if (err) throw err;
       cb(password);
     });
   }
