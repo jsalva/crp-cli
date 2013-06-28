@@ -108,3 +108,35 @@ Get all faults that happened while processing a task
 $ crowdprocess faults QszRDfLHkjKHbyIZyFQD7GEM4yL
 ...
 ```
+
+# FAQ
+
+### How is the data distributed?
+
+The data.json file should be an array. Entries of the array are streamed to browsers. Each entry of the array can end up in a distinct browser. No browser will download the whole json file.
+
+### What if I need to use external network resources from the program?
+
+Access to APIs like WebSockets and AJAX is disabled due to the risk of generating DDOS. In a near future CrowdProcess will likely provide an API that can provide access to external resources in a safely manner.
+
+### Is there a more flexible way to send data?
+
+It is possible to submit dataunits that are not written in a JSON file. Out CLI streams the data.json file rather than buffering it and sending it all at once. Our task submission API supports streaming uploads. You can look into [job-client](https://github.com/CrowdProcess/crp-job-client).
+
+### How to make an app run for infinite time?
+
+If you create a task, and keep streaming dataunits in and results out it will never end.
+
+### Is it possible to share state between browsers?
+
+Each computation must run in isolation. However, dataunits can be submitted dynamically and can reflect the meaning of results received until then, this is currently the best way to propagate state.
+
+### Is it possible to import scripts? Can I organize my code in more than one file?
+
+The importScript function isn't available in CrowdProcess Tasks. This does not mean you should work with a single big file. There are several good ways to produce a single concatenated and perhaps minified javascript file from a set of properly organized javascript files.
+
+Maybe take a look at our [Program Boilerplate](https://github.com/CrowdProcess/program-boilerplate/) it needs more work and especially better documentation but it contains a Gruntfile.js (kind of a javascript makefile) that produces a program.js from your code, which you can organize using [Node's require system](http://nodejs.org/api/modules.html).
+
+### Is it safe for the browser user?
+
+There are several levels of isolation that safeguard browser users from CrowdProcess users. These include but are not limited to, the iframe's sandboxing properties, the webworker's sandboxing properties, access removal to anything that might affect the browser user's navigation experience or privacy.
