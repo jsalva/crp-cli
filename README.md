@@ -121,7 +121,13 @@ Access to APIs like WebSockets and AJAX is disabled due to the risk of generatin
 
 ### Is there a more flexible way to send data?
 
-It is possible to submit dataunits that are not written in a JSON file. Out CLI streams the data.json file rather than buffering it and sending it all at once. Our task submission API supports streaming uploads. You can look into [job-client](https://github.com/CrowdProcess/crp-job-client).
+It is possible to submit dataunits that are not written in a JSON file. This module streams the data.json file rather than buffering it and sending it all at once. Our task submission API supports streaming uploads. You can use the `io`ommand that works like this: 
+
+```
+programThatStreamsJsonToStdout | crowdprocess io -p program.js > results
+```
+
+You can also look into [job-client](https://github.com/CrowdProcess/crp-job-client) if you want check out how the steaming is done.
 
 ### How to make an app run for infinite time?
 
