@@ -60,7 +60,7 @@ function job(args, credential) {
     prompt: 'Confirm? [y,n]',
     default: 'y'
   }, function(err, answer) {
-    if (answer.toLowerCase() == 'y')
+    if (answer && answer.toLowerCase() == 'y')
       proceed(options);
   });
 
