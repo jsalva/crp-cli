@@ -14,7 +14,7 @@ var auth = require('./auth');
 var args = process.argv;
 var arg0 = args.shift();
 
-args.shift()
+args.shift();
 
 var command = args.shift();
 

@@ -4,7 +4,7 @@ var fs         = require('fs');
 var inspect    = require('util').inspect;
 var read       = require('read');
 var JSONStream = require('JSONStream');
-var multimeter = require('multimeter')
+var multimeter = require('multimeter');
 
 var JobClient = require('crp-job-client');
 var JobProducerClient = require('crp-job-producer-client');
