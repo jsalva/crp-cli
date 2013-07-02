@@ -67,19 +67,21 @@ function io(args, credential) {
     producerStream.on('error', logError);
 
     var dataStream = process.stdin;
+    dataStream.setEncoding('utf8');
     var jsonParser = JSONStream.parse([true]);
+
     dataStream
       .pipe(jsonParser)
       .pipe(producerStream, {end: false});
 
-    getResults(taskId);
+    getResults(producerStream);
 
     finishedSending = false;
     jsonParser.once('end', function() {
       finishedSending = true;
     });
 
-    jsonParser.on('data', function() {
+    jsonParser.on('data', function(d) {
       sent ++;
       updateSentBar();
     });
@@ -87,9 +89,12 @@ function io(args, credential) {
     producerStream.on('acknowledge', function() {
       acknowledged ++;
       updateSentBar();
+      checkFinished();
     });
 
     producerStream.once('end', exit);
+
+    process.on('SIGINT', end);
 
     function updateSentBar () {
       var percent = Math.round((acknowledged / sent) * 100);
@@ -97,33 +102,44 @@ function io(args, credential) {
     }
   }
 
-  function getResults(taskId) {
+  function getResults(producerStream) {
     var encoder = JSONStream.stringify();
-    clientStream = jobClient.jobs(taskId).results.getAll(true);
-    clientStream.pipe(encoder).pipe(process.stdout);
+    encoder.pipe(process.stdout);
 
     multi.write('arrived: \n');
     var arrivedBar = multi(12, 4, {
       width: 60
     });
 
-    clientStream.on('data', function () {
+    producerStream.on('result', function (res) {
       arrived ++;
+      encoder.write(res);
       updateArrivedBar();
+      checkFinished();
     });
 
-    clientStream.on('end', exit);
+    producerStream.on('end', exit);
 
     function updateArrivedBar() {
       var percent = Math.round((arrived / acknowledged) * 100);
       arrivedBar.percent(percent);
-      if (finishedSending && sent == acknowledged) {
-        multi.write('\nAll done.\n');
-        multi.destroy();
-        stream.end();
-      }
     }
   }
+
+  function checkFinished() {
+    if (finishedSending && sent == acknowledged && acknowledged == arrived) {
+      multi.write('\nAll done.\n');
+      multi.destroy();
+      console.error('Sent: %d, Acknowledged: %d, Arrived: %d',
+        sent, acknowledged, arrived);
+      end();
+    }
+  }
+
+  function end() {
+    producerStream.end();
+  }
+
 }
 
 function logError(err) {
@@ -160,5 +176,3 @@ function exit() {
     producerStream.end();
   process.exit();
 }
-
-process.on('SIGINT', exit);
