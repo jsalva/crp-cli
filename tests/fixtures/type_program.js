@@ -1,3 +1,3 @@
 function Run(d) {
-  return d;
+  return typeof d;
 }
