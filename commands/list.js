@@ -40,13 +40,13 @@ function list(args, credential) {
           if (! progress.errors && state != 'canceled') color = 'green';
           else color = 'red';
         }
-        console.log('%s\t\t%s\t\t%d\t\t%s\t\t%d\t\t%d\t\t%s'[color],
+        console.log('%s\t\t%s\t\t%s\t\t%s\t\t%s\t\t%s\t\t%s'[color],
           createdAt,
           state,
-          progress.total,
-          progress.errors,
-          progress.complete,
-          progress.pending,
+          number(progress.total),
+          number(progress.errors),
+          number(progress.complete),
+          number(progress.pending),
           task._id);
         done();
 
@@ -65,4 +65,10 @@ function prop(p) {
 
 function sortTask(b, a) {
   return (a.created_at || 0) - (b.created_at || 0);
+}
+
+function number(n) {
+  var s = n;
+  if (isNaN(n)) s = '?';
+  return s;
 }
