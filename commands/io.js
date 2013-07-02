@@ -118,7 +118,9 @@ function io(args, credential) {
       checkFinished();
     });
 
-    producerStream.on('end', exit);
+    producerStream.on('end', function() {
+      encoder.end();
+    });
 
     function updateArrivedBar() {
       var percent = Math.round((arrived / acknowledged) * 100);
