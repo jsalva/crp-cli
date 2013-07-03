@@ -22,6 +22,6 @@ function del(args, credential) {
   client.jobs.delete(jobId, function(err) {
     if (err) throw err;
 
-    console.log('Task deleted');
+    console.log('Task %s is scheduled for removal'.green, jobId);
   });
 }
