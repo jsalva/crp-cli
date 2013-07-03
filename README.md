@@ -64,6 +64,14 @@ Sample data.json
 ]
 ```
 
+## io
+
+Pipe the JSON data into the `crowprocess` command and it spits out the results to the STDOUT:
+
+```javascript
+$ cat data.json | crowdprocess io -p program.js > results.json
+```
+
 ## list
 
 
@@ -75,6 +83,14 @@ created at    state   total   errors    complete  pending   ID
 06:57 13-06-11    complete    2   0   2   0   4B7WkfSQFYNdeHVPxAiLhs2ecpr
 06:50 13-06-11    complete    2   0   2   0   CCucVebIQhYZHxiDLXvq0rkVKRh
 06:47 13-06-11    complete    10000   1   10000   0   4GoVWuqanamtegaofKPlbYJ2r1F
+```
+
+## delete
+
+Delete a task and all the associated data.
+
+```bash
+$ crowdprocess delete EFf6EHhiQG9BZWStX61VyHaR11s
 ```
 
 ## progress
@@ -122,7 +138,7 @@ Access to APIs like WebSockets and AJAX is disabled due to the risk of generatin
 
 ### Is there a more flexible way to send data?
 
-It is possible to submit dataunits that are not written in a JSON file. This module streams the data.json file rather than buffering it and sending it all at once. Our task submission API supports streaming uploads. You can use the `io`ommand that works like this: 
+It is possible to submit dataunits that are not written in a JSON file. This module streams the data.json file rather than buffering it and sending it all at once. Our task submission API supports streaming uploads. You can use the `io`ommand that works like this:
 
 ```
 programThatStreamsJsonToStdout | crowdprocess io -p program.js > results
