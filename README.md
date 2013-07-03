@@ -16,6 +16,7 @@ To get an invite all you have to do is ask [@CrowdProcess](http://twitter.com/Cr
 
 ```bash
 $ crowdprocess signup -i <invite>
+Email: email@example.com
 Password:
 Logged in
 ```
