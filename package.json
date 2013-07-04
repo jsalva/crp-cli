@@ -1,19 +1,19 @@
 {
   "name": "crowdprocess-cli",
-  "version": "0.5.5",
+  "version": "0.5.7",
   "description": "CrowdProcess Command Line Interface",
   "main": "index.js",
   "preferGlobal": true,
   "repository": {
     "type": "git",
-    "url": "https://github.com/CrowdProcess/cli.git"
+    "url": "git://github.com/CrowdProcess/cli.git"
   },
   "dependencies": {
     "optimist": "*",
-    "crp-job-producer-client": "https://github.com/CrowdProcess/crp-job-producer-client.git",
-    "crp-job-client": "https://github.com/CrowdProcess/crp-job-client.git",
-    "crp-auth-client": "https://github.com/CrowdProcess/crp-auth-client.git",
-    "crp-admin-client": "https://github.com/CrowdProcess/crp-admin-client.git",
+    "crp-job-producer-client": "~0.0.1",
+    "crp-job-client": "~0.0.1",
+    "crp-auth-client": "~0.0.1",
+    "crp-admin-client": "~0.0.1",
 
     "read": "*",
     "colors": "*",
