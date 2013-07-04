@@ -10,10 +10,10 @@
   },
   "dependencies": {
     "optimist": "*",
-    "crp-job-producer-client": "git://github.com/CrowdProcess/crp-job-producer-client.git",
-    "crp-job-client": "git://github.com/CrowdProcess/crp-job-client.git",
-    "crp-auth-client": "git://github.com/CrowdProcess/crp-auth-client.git",
-    "crp-admin-client": "git://github.com/CrowdProcess/crp-admin-client.git",
+    "crp-job-producer-client": "https://github.com/CrowdProcess/crp-job-producer-client.git",
+    "crp-job-client": "https://github.com/CrowdProcess/crp-job-client.git",
+    "crp-auth-client": "https://github.com/CrowdProcess/crp-auth-client.git",
+    "crp-admin-client": "https://github.com/CrowdProcess/crp-admin-client.git",
 
     "read": "*",
     "colors": "*",
