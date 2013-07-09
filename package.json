@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "optimist": "*",
-    "crp-job-producer-client": "~0.1.1",
+    "crp-job-producer-client": "0.1.1",
     "crp-job-client": "~0.0.1",
     "crp-auth-client": "~0.0.1",
     "crp-admin-client": "~0.0.1",
