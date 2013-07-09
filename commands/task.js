@@ -1,10 +1,12 @@
 require('colors');
+
 var assert = require('assert');
-var fs         = require('fs');
-var inspect    = require('util').inspect;
-var read       = require('read');
-var JSONStream = require('JSONStream');
-var multimeter = require('multimeter');
+var fs          = require('fs');
+var inspect     = require('util').inspect;
+
+var read        = require('read');
+var JSONStream  = require('JSONStream');
+var multimeter  = require('multimeter');
 
 var JobClient = require('crp-job-client');
 var JobProducerClient = require('crp-job-producer-client');
@@ -91,15 +93,22 @@ function proceed(options) {
     });
 
     stream.on('error', error);
+    stream.on('fault', error);
 
-    var readFile = fs.createReadStream(options.dataFilePath, 'utf8');
+    var readFile = fs.createReadStream(options.dataFilePath, {
+      highWaterMark: '1024',
+      encoding: 'utf8'
+    });
+
     var jsonStream = JSONStream.parse([true]);
 
-    readFile.pipe(jsonStream).pipe(stream, {end: false});
+    readFile.
+      pipe(jsonStream).
+      pipe(stream, {end: false});
 
     var sent = 0;
     var acknowledged = 0;
-    var multi = multimeter(process);
+    var multi = multimeter(process.stdout);
     var bar = multi.rel(0, -1);
 
     var finishedSending = false;
@@ -130,8 +139,10 @@ function proceed(options) {
     });
 
     function updateBar() {
-      var percent = Math.round((acknowledged / sent) * 100);
-      bar.percent(percent);
+      var percent = Math.floor((acknowledged / sent) * 100);
+      var message = 'sent: ' + sent + ', acknowledged: ' + acknowledged +
+                    ' (' + percent + '%)   ';
+      bar.percent(percent, message);
       if (finishedSending && sent == acknowledged) {
         multi.destroy();
         stream.end();
