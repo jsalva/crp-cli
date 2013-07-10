@@ -14,6 +14,7 @@
     "crp-job-client": "~0.0.1",
     "crp-auth-client": "~0.0.1",
     "crp-admin-client": "~0.0.1",
+    "speed-meter": "~0.0.1",
 
     "read": "*",
     "colors": "*",

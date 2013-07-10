@@ -7,6 +7,7 @@ var inspect     = require('util').inspect;
 var read        = require('read');
 var JSONStream  = require('JSONStream');
 var multimeter  = require('multimeter');
+var SpeedMeter  = require('speed-meter');
 
 var JobClient = require('crp-job-client');
 var JobProducerClient = require('crp-job-producer-client');
@@ -138,10 +139,16 @@ function proceed(options) {
       }
     });
 
+    // Speed meter
+
+    var speedMeter = SpeedMeter(jsonStream);
+
     function updateBar() {
       var percent = Math.floor((acknowledged / sent) * 100);
       var message = 'sent: ' + sent + ', acknowledged: ' + acknowledged +
-                    ' (' + percent + '%)   ';
+                    ' (' + percent + '%)';
+      message += ' - (' + speedMeter.speed + ' bytes/sec)';
+      message += '      '; // padding
       bar.percent(percent, message);
       if (finishedSending && sent == acknowledged) {
         multi.destroy();
