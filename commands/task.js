@@ -41,7 +41,7 @@ function job(args, credential) {
     console.error('data file not found: ' + args.d);
     process.exit(1);
   }
-    
+
 
   var options = {
     // FIXME: Don't need bids for now
@@ -97,7 +97,7 @@ function proceed(options) {
     stream.on('fault', error);
 
     var readFile = fs.createReadStream(options.dataFilePath, {
-      highWaterMark: '1024',
+      highWaterMark: '4098',
       encoding: 'utf8'
     });
 
