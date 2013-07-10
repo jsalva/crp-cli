@@ -2,6 +2,7 @@ require('colors');
 var fs         = require('fs');
 var JSONStream = require('JSONStream');
 var multimeter = require('multimeter');
+var SpeedMeter  = require('speed-meter');
 
 var JobClient = require('crp-job-client');
 var JobProducerClient = require('crp-job-producer-client');
@@ -56,7 +57,7 @@ function io(args, credential) {
 
     multi.write('sent:    \n');
     var sentBar = multi(12, 3, {
-      width: 60
+      width: 40
     });
 
     producerStream = JobProducerClient({
@@ -96,9 +97,17 @@ function io(args, credential) {
 
     process.on('SIGINT', end);
 
+    // Speed meter
+
+    var sendSpeedMeter = SpeedMeter(jsonParser);
+
     function updateSentBar () {
-      var percent = Math.round((acknowledged / sent) * 100);
-      sentBar.percent(percent);
+      var percent = Math.floor((acknowledged / sent) * 100);
+      var message = 'sent: ' + sent + ', acknowledged: ' + acknowledged +
+                    ' (' + percent + '%)';
+      message += ' - (' + sendSpeedMeter.speed + ' bytes/sec)';
+      message += '      '; // padding
+      sentBar.percent(percent, message);
     }
   }
 
@@ -108,7 +117,7 @@ function io(args, credential) {
 
     multi.write('arrived: \n');
     var arrivedBar = multi(12, 4, {
-      width: 60
+      width: 40
     });
 
     producerStream.on('result', function (res) {
@@ -124,7 +133,9 @@ function io(args, credential) {
 
     function updateArrivedBar() {
       var percent = Math.round((arrived / acknowledged) * 100);
-      arrivedBar.percent(percent);
+      var message = 'results: ' + arrived + ' (' + percent + '%)';
+      message += '      '; // padding
+      arrivedBar.percent(percent, message);
     }
   }
 

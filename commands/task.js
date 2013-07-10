@@ -97,7 +97,7 @@ function proceed(options) {
     stream.on('fault', error);
 
     var readFile = fs.createReadStream(options.dataFilePath, {
-      highWaterMark: '4098',
+      highWaterMark: '10240',
       encoding: 'utf8'
     });
 
