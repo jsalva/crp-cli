@@ -1,6 +1,13 @@
 # CrowdProcess Command Line Interface
 
+![CrowdProcess](http://crowdprocess.com/CrowdProcessLogo.png)
+
+
 # Install
+
+You will need node.js to install and run CrowdProcess.
+[Install node on your computer](http://howtonode.org/how-to-install-nodejs "How to install node on Ubuntu, OS X and Windows") and you're good to go.
+
 
 ```bash
 npm install -g crowdprocess-cli
