@@ -4,7 +4,7 @@
 
 # Install
 
-First you will need to install [Node on your computer](http://howtonode.org/how-to-install-nodejs "How to install node on Ubuntu, OS X and Windows").
+First you will need to install [Node on your computer](http://nodejs.org/ "Just click 'install'").
 
 ```bash
 npm install -g crowdprocess-cli
