@@ -5,6 +5,7 @@
 # Install
 
 First you will need to install [Node on your computer](http://nodejs.org/ "Just click 'install'").
+And then run...
 
 ```bash
 npm install -g crowdprocess-cli
