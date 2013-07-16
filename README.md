@@ -131,6 +131,14 @@ $ crowdprocess faults QszRDfLHkjKHbyIZyFQD7GEM4yL
 ...
 ```
 
+We are still trying to figure out what is the best way of handling errors. It is hard to get a meaningful error message and a proper stacktrace for a CrowdProcess task.
+
+Basically there are two types of errors: **programErrors** and **processingErrors**. The former means there was a error just trying to load your program, these can be syntax errors of even just trying to execute some initialization specified by the program, the latter means there was an error when processing a dataunit, i.e. when the Run gets called.
+
+When there is an error, CrowdProcess tries again, until it reaches a limit of retries, and quits.
+
+There seem to be some weird browsers on the web so having some errors sometimes is probably normal. Again, we are still trying to figure a better way to deal with this.
+
 # FAQ
 
 ### How is the data distributed?
