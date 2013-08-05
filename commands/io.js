@@ -69,6 +69,7 @@ function io(args, credential) {
 
     var dataStream = process.stdin;
     dataStream.setEncoding('utf8');
+
     var jsonParser = JSONStream.parse([true]);
 
     dataStream
