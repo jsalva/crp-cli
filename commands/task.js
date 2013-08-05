@@ -109,6 +109,7 @@ function proceed(options) {
 
     var sent = 0;
     var acknowledged = 0;
+
     var multi = multimeter(process.stdout);
     var bar = multi.rel(0, -1);
 
@@ -128,7 +129,10 @@ function proceed(options) {
       updateBar();
     });
 
+    var ended = false;
+
     stream.once('end', function() {
+      ended = true;
       if (! finishedSending || sent != acknowledged) {
         console.error('Stream ended prematurely.'.red);
         console.error('Only acknowledged %d of the %d sent.', acknowledged, sent);
@@ -153,6 +157,10 @@ function proceed(options) {
       if (finishedSending && sent == acknowledged) {
         multi.destroy();
         stream.end();
+        setTimeout(function() {
+          if (! ended) process.exit(0);
+        }, 2000).unref();
+
       }
     }
   }
