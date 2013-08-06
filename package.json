@@ -1,6 +1,6 @@
 {
   "name": "crowdprocess-cli",
-  "version": "0.7.7",
+  "version": "0.7.8",
   "description": "CrowdProcess Command Line Interface",
   "main": "index.js",
   "preferGlobal": true,
@@ -10,8 +10,8 @@
   },
   "dependencies": {
     "optimist": "*",
-    "crp-task-producer-client": "0.1.5",
-    "crp-task-client": "~0.0.1",
+    "crp-task-producer-client": "0.1.6",
+    "crp-task-client": "~0.0.2",
     "crp-auth-client": "~0.0.1",
     "crp-admin-client": "git+https://github.com/CrowdProcess/crp-admin-client.git",
     "speed-meter": "~0.0.1",
