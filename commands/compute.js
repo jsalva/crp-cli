@@ -3,7 +3,7 @@ var fs         = require('fs');
 var inspect    = require('util').inspect;
 var JSONStream = require('JSONStream');
 
-var JobClient = require('crp-job-client');
+var TaskClient = require('crp-task-client');
 var error = require('../error');
 
 exports =
@@ -22,7 +22,7 @@ function compute(args, credential) {
     error('No task id specified');
   }
 
-  var client = JobClient({credential: credential});
+  var client = TaskClient({credential: credential});
 
   var ee = client.tasks.compute(taskId);
 

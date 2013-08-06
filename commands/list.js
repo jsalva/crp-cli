@@ -1,7 +1,7 @@
 require('colors');
 var async = require('async');
 var moment = require('moment');
-var Client = require('crp-job-client');
+var TaskClient = require('crp-task-client');
 var error = require('../error');
 
 exports =
@@ -10,7 +10,7 @@ module.exports = list;
 module.exports.requiresAuth = true;
 
 function list(args, credential) {
-  var client = Client({
+  var client = TaskClient({
     credential: credential
   });
 

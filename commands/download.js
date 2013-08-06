@@ -4,7 +4,7 @@ var inspect    = require('util').inspect;
 var JSONStream = require('JSONStream');
 var multimeter = require('multimeter');
 
-var JobClient = require('crp-job-client');
+var TaskClient = require('crp-task-client');
 var error = require('../error');
 
 exports =
@@ -34,7 +34,7 @@ function download(args, credential) {
   if (args.O) out = fs.createWriteStream(args.O);
   else out = process.stdout;
 
-  var client = JobClient({credential: credential});
+  var client = TaskClient({credential: credential});
 
   client.tasks.progress(taskId, function(err, stats) {
     if (err) error(err);
