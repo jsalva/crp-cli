@@ -9,8 +9,8 @@ var JSONStream  = require('JSONStream');
 var multimeter  = require('multimeter');
 var SpeedMeter  = require('speed-meter');
 
-var JobClient = require('crp-job-client');
-var JobProducerClient = require('crp-job-producer-client');
+var TaskClient = require('crp-task-client');
+var TaskProducerClient = require('crp-task-producer-client');
 
 exports =
 module.exports = task;
@@ -71,11 +71,11 @@ function task(args, credential) {
 };
 
 function proceed(options) {
-  var jobClient = JobClient({
+  var taskClient = TaskClient({
     credential: options.credential
   });
 
-  jobClient.tasks.create({
+  taskClient.tasks.create({
     bid: options.bid,
     program: options.program
   }, afterTaskCreated);
@@ -88,7 +88,7 @@ function proceed(options) {
     console.log('Task successfully created.\nTask Id: ', task._id.yellow);
     console.log('Data units upload progress:');
 
-    var stream = JobProducerClient({
+    var stream = TaskProducerClient({
       credential: options.credential,
       taskId: task._id
     });

@@ -1,7 +1,7 @@
 require('colors');
 var util = require('util');
 
-var Client = require('crp-job-client');
+var TaskClient = require('crp-task-client');
 var error = require('../error');
 
 exports =
@@ -16,7 +16,7 @@ function faults(args, credential) {
     process.exit(1);
   }
 
-  var client = Client({
+  var client = TaskClient({
     credential: credential
   });
 

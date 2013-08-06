@@ -1,6 +1,6 @@
 require('colors');
 
-var Client = require('crp-job-client');
+var TaskClient = require('crp-task-client');
 var error = require('../error');
 
 
@@ -15,7 +15,7 @@ function del(args, credential) {
     error('No task id specified');
   }
 
-  var client = Client({
+  var client = TaskClient({
     credential: credential
   });
 
