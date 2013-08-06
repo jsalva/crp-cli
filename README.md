@@ -157,7 +157,7 @@ It is possible to submit dataunits that are not written in a JSON file. This mod
 programThatStreamsJsonToStdout | crowdprocess io -p program.js > results
 ```
 
-You can also look into [job-client](https://github.com/CrowdProcess/crp-job-client) if you want check out how the steaming is done.
+You can also look into [task-client](https://github.com/CrowdProcess/crp-task-client) if you want check out how the steaming is done.
 
 ### How to make an app run for infinite time?
 
