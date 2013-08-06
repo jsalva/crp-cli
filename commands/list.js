@@ -14,20 +14,20 @@ function list(args, credential) {
     credential: credential
   });
 
-  client.jobs.list(function(err, jobs) {
+  client.tasks.list(function(err, tasks) {
     if (err) throw err;
     var percentage = 0;
 
-    if (jobs.length) {
+    if (tasks.length) {
       console.log('created at\t\tstate\t\ttotal\t\terrors\t\tcomplete\tpending\t\tID');
     }
 
-    jobs.sort(sortTask);
-    async.eachSeries(jobs, show);
+    tasks.sort(sortTask);
+    async.eachSeries(tasks, show);
 
     function show(task, done) {
       var state = task.state || 'active';
-      client.jobs.progress(task._id, function(err, progress) {
+      client.tasks.progress(task._id, function(err, progress) {
         if (err) error(err);
 
         var createdAt = task.created_at;
