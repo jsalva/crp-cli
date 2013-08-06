@@ -1,7 +1,5 @@
 #!/usr/bin/env node
 
-require('longjohn');
-
 if (! process.env.NODE_ENV) process.env.NODE_ENV = 'production';
 
 var version = process.versions.node.split('.');

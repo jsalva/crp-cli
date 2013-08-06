@@ -4,8 +4,8 @@ var JSONStream = require('JSONStream');
 var multimeter = require('multimeter');
 var SpeedMeter  = require('speed-meter');
 
-var JobClient = require('crp-job-client');
-var JobProducerClient = require('crp-job-producer-client');
+var TaskClient = require('crp-task-client');
+var TaskProducerClient = require('crp-task-producer-client');
 
 exports =
 module.exports = io;
@@ -39,16 +39,16 @@ function io(args, credential) {
   var program = fs.readFileSync(args.p, 'utf8');
   var bid = args.bid || 1; // FIXME: Don't need bids for now
 
-  var jobClient = JobClient({
+  var taskClient = TaskClient({
     credential: credential
   });
 
-  jobClient.jobs.create({
+  taskClient.tasks.create({
     bid: bid,
     program: program
-  }, afterJobCreated);
+  }, afterTaskCreated);
 
-  function afterJobCreated(err, task) {
+  function afterTaskCreated(err, task) {
     if (err) throw err;
 
     var taskId = task._id;
@@ -60,9 +60,9 @@ function io(args, credential) {
       width: 40
     });
 
-    producerStream = JobProducerClient({
+    producerStream = TaskProducerClient({
       credential: credential,
-      jobId: taskId
+      taskId: taskId
     });
 
     producerStream.on('error', logError);

@@ -3,7 +3,7 @@ var fs         = require('fs');
 var inspect    = require('util').inspect;
 var JSONStream = require('JSONStream');
 
-var JobClient = require('crp-job-client');
+var TaskClient = require('crp-task-client');
 var error = require('../error');
 
 exports =
@@ -11,28 +11,28 @@ module.exports = compute;
 
 module.exports.usage =
 function usage(name, args) {
-  args.usage('Usage: crowdprocess' + ' ' + name + ' <job_id>');
+  args.usage('Usage: crowdprocess' + ' ' + name + ' <task_id>');
 };
 
 module.exports.requiresAuth = true;
 
 function compute(args, credential) {
-  var jobId = args._[0];
-  if (! jobId) {
-    error('No job id specified');
+  var taskId = args._[0];
+  if (! taskId) {
+    error('No task id specified');
   }
 
-  var client = JobClient({credential: credential});
+  var client = TaskClient({credential: credential});
 
-  var ee = client.jobs.compute(jobId);
+  var ee = client.tasks.compute(taskId);
 
-  ee.on('no job', function() {
-    console.error('Couldn\'t find job with id %s', jobId);
+  ee.on('no task', function() {
+    console.error('Couldn\'t find task with id %s', taskId);
     process.exit(-1);
   });
 
-  ee.on('job', function(j) {
-    console.log('Job %s found: %j', jobId, j);
+  ee.on('task', function(j) {
+    console.log('Task %s found: %j', taskId, j);
   });
 
   ee.on('data', function(d) {
@@ -44,7 +44,7 @@ function compute(args, credential) {
   });
 
   ee.on('end', function() {
-    console.log('job ended.');
+    console.log('task ended.');
     process.exit(0);
   });
 
