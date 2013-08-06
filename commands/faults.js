@@ -10,8 +10,8 @@ module.exports = faults;
 module.exports.requiresAuth = true;
 
 function faults(args, credential) {
-  var jobId = args._[0];
-  if (! jobId) {
+  var taskId = args._[0];
+  if (! taskId) {
     console.error('No task id specified');
     process.exit(1);
   }
@@ -20,10 +20,10 @@ function faults(args, credential) {
     credential: credential
   });
 
-  client.jobs(jobId).faults.getAll(function(err, faults) {
+  client.tasks(taskId).faults.getAll(function(err, faults) {
     if (err) error(err);
     if (! faults.length) console.log('0 faults'.green);
-    else console.log('Found %d faults in task %s:'.yellow, faults.length, jobId);
+    else console.log('Found %d faults in task %s:'.yellow, faults.length, taskId);
     faults = faults.map(function(fault) {
       fault = fault.fault;
       try {

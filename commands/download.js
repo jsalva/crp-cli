@@ -15,16 +15,16 @@ module.exports.requiresAuth = true;
 module.exports.usage =
 function usage(name, args) {
   args.
-    usage('Usage: crowdprocess' + ' ' + name + ' <job_id> [-O <results.json>] --wait').
+    usage('Usage: crowdprocess' + ' ' + name + ' <task_id> [-O <results.json>] --wait').
     alias('O', 'output-file').
     boolean('w').
     alias('w', 'wait');
 };
 
 function download(args, credential) {
-  var jobId = args._[0];
-  if (! jobId) {
-    error(new Error('No job id specified'));
+  var taskId = args._[0];
+  if (! taskId) {
+    error(new Error('No task id specified'));
   }
 
 
@@ -36,7 +36,7 @@ function download(args, credential) {
 
   var client = JobClient({credential: credential});
 
-  client.jobs.progress(jobId, function(err, stats) {
+  client.tasks.progress(taskId, function(err, stats) {
     if (err) error(err);
 
     if (args.O) console.error('This task has %d data units', stats.total);
@@ -54,7 +54,7 @@ function download(args, credential) {
     }
 
     var encoder = JSONStream.stringify();
-    var s = client.jobs(jobId).results.getAll(args.wait);
+    var s = client.tasks(taskId).results.getAll(args.wait);
     s.pipe(encoder).pipe(out);
 
     var arrived = 0;

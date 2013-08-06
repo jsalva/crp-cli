@@ -10,8 +10,8 @@ module.exports = del;
 module.exports.requiresAuth = true;
 
 function del(args, credential) {
-  var jobId = args._[0];
-  if (! jobId) {
+  var taskId = args._[0];
+  if (! taskId) {
     error('No task id specified');
   }
 
@@ -19,9 +19,9 @@ function del(args, credential) {
     credential: credential
   });
 
-  client.jobs.delete(jobId, function(err) {
+  client.tasks.delete(taskId, function(err) {
     if (err) throw err;
 
-    console.log('Task %s is scheduled for removal'.green, jobId);
+    console.log('Task %s is scheduled for removal'.green, taskId);
   });
 }

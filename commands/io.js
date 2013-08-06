@@ -43,12 +43,12 @@ function io(args, credential) {
     credential: credential
   });
 
-  jobClient.jobs.create({
+  jobClient.tasks.create({
     bid: bid,
     program: program
-  }, afterJobCreated);
+  }, afterTaskCreated);
 
-  function afterJobCreated(err, task) {
+  function afterTaskCreated(err, task) {
     if (err) throw err;
 
     var taskId = task._id;
@@ -62,7 +62,7 @@ function io(args, credential) {
 
     producerStream = JobProducerClient({
       credential: credential,
-      jobId: taskId
+      taskId: taskId
     });
 
     producerStream.on('error', logError);

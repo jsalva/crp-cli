@@ -13,7 +13,7 @@ var JobClient = require('crp-job-client');
 var JobProducerClient = require('crp-job-producer-client');
 
 exports =
-module.exports = job;
+module.exports = task;
 
 module.exports.requiresAuth = true;
 
@@ -29,7 +29,7 @@ function usage(name, args) {
     // demand('bid'); // FIXME: Don't need bids for now
 };
 
-function job(args, credential) {
+function task(args, credential) {
   if (! fs.existsSync(args.p)) {
     console.error('program file not found: ' + args.p);
     process.exit(1);
@@ -75,22 +75,22 @@ function proceed(options) {
     credential: options.credential
   });
 
-  jobClient.jobs.create({
+  jobClient.tasks.create({
     bid: options.bid,
     program: options.program
-  }, afterJobCreated);
+  }, afterTaskCreated);
 
-  function afterJobCreated(err, job) {
+  function afterTaskCreated(err, task) {
     if (err) throw err;
 
-    assert('job', 'No task has been created.');
+    assert('task', 'No task has been created.');
 
-    console.log('Task successfully created.\nTask Id: ', job._id.yellow);
+    console.log('Task successfully created.\nTask Id: ', task._id.yellow);
     console.log('Data units upload progress:');
 
     var stream = JobProducerClient({
       credential: options.credential,
-      jobId: job._id
+      taskId: task._id
     });
 
     stream.on('error', error);
@@ -139,7 +139,7 @@ function proceed(options) {
       } else {
         console.log('100%'.green);
         console.log('%d data units uploaded successfully'.green, sent);
-        console.log('You can use `crowdprocess progress %s` to monitor job progress.', job._id);
+        console.log('You can use `crowdprocess progress %s` to monitor task progress.', task._id);
       }
     });
 
