@@ -3,10 +3,10 @@
 [![CrowdProcess](http://crowdprocess.com/CrowdProcessLogo.png)](http://crowdprocess.com/)
 
 [CrowdProcess](http://crowdprocess.com/) is a browser-powered distributed computing platform.  
-Our partner websites connect to our platform and supply it with their viewers browsers processing power using an [HTML5 Web Worker](https://developer.mozilla.org/en-US/docs/Web/Guide/Performance/Using_web_workers).  
+The platform connects with our partner websites and they supply it with their viewers browsers processing power using an [HTML5 Web Worker](https://developer.mozilla.org/en-US/docs/Web/Guide/Performance/Using_web_workers).  
 
 We make that processing power available to our users and clients through this Command Line Interface.  
-You can have access to the platform, submit your tasks and play around a bit.
+With it you can have access to the platform, submit your tasks and play around a bit.
 
 # Install
 
