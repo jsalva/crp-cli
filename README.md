@@ -2,6 +2,9 @@
 
 ![CrowdProcess](http://crowdprocess.com/CrowdProcessLogo.png)
 
+CrowdProcess is a browser-powered distributed computing platform. Our partner websites connect to our platform and supply it with a tiny amount of their viewers browsers processing power. We then make that processing power available to our users and clients.
+With this Command Line Interface you can have access to the most amazing browser-powered distributed computing platform that ever came to be. 
+
 # Install
 
 First you will need to install [Node on your computer](http://nodejs.org/ "Just click 'install'").  
