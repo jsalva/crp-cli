@@ -12,19 +12,15 @@ With it you can have access to the platform, submit your tasks and play around a
 
 First you will need to install [Node on your computer](http://nodejs.org/ "Just click 'install'").  
 And then run...  
-
 ```bash
 npm install -g crowdprocess-cli
 ```
 
 # Use
 
-## signup
-
-CrowdProcess is currently in a private beta, so you'll need an invite to use it.
-
-To get an invite all you have to do is ask [@CrowdProcess](http://twitter.com/CrowdProcess) on twitter or send us an [email](mailto:hello@crowdprocess.com).
-
+## signup  
+CrowdProcess is currently in a private beta, so you'll need an invite to use it.  
+To get an invite all you have to do is ask [@CrowdProcess](http://twitter.com/CrowdProcess) on twitter or send us an [email](mailto:hello@crowdprocess.com).  
 ```bash
 $ crowdprocess signup -i <invite>
 Email: email@example.com
@@ -32,7 +28,7 @@ Password:
 Signed Up
 ```
 
-## login
+## login  
 ```bash
 $ crowdprocess login
 Email: email@example.com
@@ -42,8 +38,7 @@ Logged in
 
 ## task
 
-Create a task, with a program.js and a data.json.
-
+Create a task, with a program.js and a data.json.  
 ```bash
 $ crowdprocess task -d data.json -p program.js
 About to create task with these options:
