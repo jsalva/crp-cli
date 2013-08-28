@@ -1,6 +1,6 @@
 {
   "name": "crowdprocess-cli",
-  "version": "0.7.8",
+  "version": "0.7.9",
   "description": "CrowdProcess Command Line Interface",
   "main": "index.js",
   "preferGlobal": true,
@@ -15,7 +15,6 @@
     "crp-auth-client": "~0.0.1",
     "crp-admin-client": "~0.0.1",
     "speed-meter": "~0.0.1",
-
     "read": "*",
     "colors": "*",
     "JSONStream": "*",
