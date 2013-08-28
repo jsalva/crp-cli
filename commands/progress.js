@@ -1,4 +1,5 @@
 require('colors');
+var util = require('util');
 
 var TaskClient = require('crp-task-client');
 var error = require('../error');
@@ -24,12 +25,14 @@ function progress(args, credential) {
     var percentage = 0;
     if (stats.total) percentage = (stats.complete / stats.total) * 100;
     console.log('Progress for task %s:', taskId.yellow);
-    console.log('\t%d%'.green, percentage);
+    if (stats.cancelReason)
+      console.log('\tCancel reason: %s', stats.cancelReason.red);
+    console.log('\tProgress:\t%s', util.format('%d%', percentage).green);
     console.log('\tTotal   :\t%s', stats.total.toString().green);
     console.log('\tComplete:\t%s', stats.complete.toString().green);
     console.log('\tPending :\t%s', stats.pending.toString().green);
     console.log('\tErrors: :\t%s', stats.errors.toString().green);
-    console.log();
+    console.log(stats);
 
     if (percentage == 100) {
       console.log('You can download task results using `crowdprocess download %s`.\n', taskId);
