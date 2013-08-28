@@ -1,6 +1,6 @@
 {
   "name": "crowdprocess-cli",
-  "version": "0.7.9",
+  "version": "0.7.10",
   "description": "CrowdProcess Command Line Interface",
   "main": "index.js",
   "preferGlobal": true,
