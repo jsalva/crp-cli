@@ -32,7 +32,7 @@ function progress(args, credential) {
     console.log('\tComplete:\t%s', stats.complete.toString().green);
     console.log('\tPending :\t%s', stats.pending.toString().green);
     console.log('\tErrors: :\t%s', stats.errors.toString().green);
-    console.log(stats);
+    console.log();
 
     if (percentage == 100) {
       console.log('You can download task results using `crowdprocess download %s`.\n', taskId);
