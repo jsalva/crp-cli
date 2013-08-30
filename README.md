@@ -17,7 +17,8 @@ npm install -g crowdprocess-cli
 # Use  
 ## signup
 CrowdProcess is currently in a private beta, so you'll need an invite to use it.  
-To get an invite all you have to do is ask [@CrowdProcess](http://twitter.com/CrowdProcess) on twitter or send us an [email](mailto:hello@crowdprocess.com?&subject=Gimme an invite code&body=Hi, &nbsp; My name is &nbsp; I wanto to use CrowdProcess to").
+To get an invite all you have to do is ask [@CrowdProcess](http://twitter.com/CrowdProcess) on twitter or send us an <a href="mailto:hello@crowdprocess.com&amp;subject=Gimme an invite code&amp;body=Hi,&amp;body=My name is&amp;body=I want to use CrowdProcess to>e-mail</a>
+.
 ```bash
 $ crowdprocess signup -i <invite>
 Email: email@example.com
