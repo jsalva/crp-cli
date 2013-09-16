@@ -22,7 +22,8 @@
     "request": "*",
     "moment": "*",
     "async": "~0.2.8",
-    "bugsnag": "*"
+    "bugsnag": "*",
+    "osenv": "*"
   },
   "bin": {
     "crowdprocess": "./index.js"
