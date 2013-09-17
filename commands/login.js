@@ -2,8 +2,8 @@ require('colors');
 var read = require('read');
 var fs = require('fs');
 var authClient = require('crp-auth-client');
-var utils = require('../utils');
 var error = require('../error');
+var userHome = require('osenv').home;
 
 exports =
 module.exports = login;
@@ -59,7 +59,7 @@ function doLogin(username, password, cb) {
   });
 }
 
-var cpDir = utils.getUserHome() + '/.crowdprocess';
+var cpDir = userHome() + '/.crowdprocess';
 function writeToken(token) {
   token.expires_at = token.expires_in + Date.now();
   if (!fs.existsSync(cpDir)) {

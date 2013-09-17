@@ -1,6 +1,6 @@
 var fs = require('fs');
 var colors = require('colors');
-var utils = require('../utils');
+var userHome = require('osenv').home;
 
 exports =
 module.exports = logout;
@@ -12,7 +12,7 @@ function usage(name, args) {
 };
 
 function logout(args) {
-  var cpDir = utils.getUserHome() + '/.crowdprocess';
+  var cpDir = userHome() + '/.crowdprocess';
   var confPath = cpDir + '/' + '/auth_token.json';
   if (fs.existsSync(confPath)) {
     fs.unlinkSync(confPath);
