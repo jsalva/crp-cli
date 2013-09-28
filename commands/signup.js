@@ -10,7 +10,6 @@ module.exports.usage =
 function usage(name, args) {
   args.
     alias('invitation', 'i').
-    demand('invitation').
     usage('crowdprocess signup -i <invitation> [<email>] [<password>]');
 };
 
