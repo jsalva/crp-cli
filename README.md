@@ -12,7 +12,7 @@ With it you can have access to the platform, submit your tasks and play around a
 First you will need to install [Node on your computer](http://nodejs.org/ "Just click 'install'").  
 And then run...
 ```bash
-npm install -g crowdprocess-cli
+sudo npm install -g crowdprocess-cli
 ```  
 # Use  
 ## signup
