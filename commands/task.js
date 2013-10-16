@@ -25,6 +25,7 @@ function usage(name, args) {
     alias('d', 'data-file').
     demand('data-file').
     alias('b', 'bid').
+    alias('g', 'group').
     alias('y', 'confirm');
     // demand('bid'); // FIXME: Don't need bids for now
 };
@@ -46,6 +47,7 @@ function task(args, credential) {
   var options = {
     // FIXME: Don't need bids for now
     bid: args.bid || 1,
+    group: args.group,
     dataFilePath: args.d,
     program: program,
     credential: credential
@@ -77,6 +79,7 @@ function proceed(options) {
 
   taskClient.tasks.create({
     bid: options.bid,
+    group: options.group,
     program: options.program
   }, afterTaskCreated);
 
