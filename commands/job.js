@@ -1,6 +1,6 @@
 require('colors');
 
-var assert = require('assert');
+var assert      = require('assert');
 var fs          = require('fs');
 var inspect     = require('util').inspect;
 
@@ -9,15 +9,15 @@ var JSONStream  = require('JSONStream');
 var multimeter  = require('multimeter');
 var SpeedMeter  = require('speed-meter');
 
+var JobClient = require('crp-job-client');
 var TaskClient = require('crp-task-client');
-var TaskProducerClient = require('crp-task-producer-client');
 
 exports =
-module.exports = task;
+module.exports = job;
 
 module.exports.requiresAuth = true;
 
-module.exports.usage =
+module.exports.usage = usage;
 function usage(name, args) {
   args.
     alias('p', 'program-file').
@@ -28,9 +28,9 @@ function usage(name, args) {
     alias('g', 'group').
     alias('y', 'confirm');
     // demand('bid'); // FIXME: Don't need bids for now
-};
+}
 
-function task(args, credential) {
+function job(args, credential) {
   if (! fs.existsSync(args.p)) {
     console.error('program file not found: ' + args.p);
     process.exit(1);
@@ -42,7 +42,6 @@ function task(args, credential) {
     console.error('data file not found: ' + args.d);
     process.exit(1);
   }
-
 
   var options = {
     // FIXME: Don't need bids for now
@@ -56,7 +55,7 @@ function task(args, credential) {
   if (args.y)
     return proceed(options);
 
-  console.log('About to create a task with these options:\n%s'.yellow, inspect(
+  console.log('About to create a job with these options:\n%s'.yellow, inspect(
     args.debug
     ? options
     : { dataFile: args.d, programFile: args.p }).green);
@@ -73,27 +72,27 @@ function task(args, credential) {
 };
 
 function proceed(options) {
-  var taskClient = TaskClient({
+  var jobClient = jobClient({
     credential: options.credential
   });
 
-  taskClient.tasks.create({
+  jobClient.jobs.create({
     bid: options.bid,
     group: options.group,
     program: options.program
   }, afterTaskCreated);
 
-  function afterTaskCreated(err, task) {
+  function afterTaskCreated(err, job) {
     if (err) throw err;
 
-    assert('task', 'No task has been created.');
+    assert(job, 'No job has been created.');
 
-    console.log('Task successfully created.\nTask Id: ', task._id.yellow);
+    console.log('Job successfully created.\nTask Id: ', job._id.yellow);
     console.log('Data units upload progress:');
 
-    var stream = TaskProducerClient({
+    var stream = TaskClient({
       credential: options.credential,
-      taskId: task._id
+      jobId: job._id
     });
 
     stream.on('error', error);

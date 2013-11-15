@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
-if (! process.env.NODE_ENV) process.env.NODE_ENV = 'production';
+if (!process.env.NODE_ENV)
+  process.env.NODE_ENV = 'production';
 
 var version = process.versions.node.split('.');
 if (version[0] == 0 && version[1] < 10) {

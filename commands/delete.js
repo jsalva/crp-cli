@@ -1,36 +1,36 @@
 require('colors');
 
-var TaskClient = require('crp-task-client');
+var JobClient = require('crp-job-client');
 var error = require('../error');
 
 
 exports =
 module.exports = del;
 module.exports.requiresAuth = true;
-module.exports.usage =
+module.exports.usage = usage;
 function usage(name, args) {
   args.
     alias('a', 'all');
 };
 
 function del(args, credential) {
-  var taskId = args._[0];
-  if (! taskId && !args.all) {
+  var jobId = args._[0];
+  if (! jobId && !args.all) {
     error('No task id specified');
   }
 
-  var client = TaskClient({
+  var client = JobClient({
     credential: credential
   });
 
   if (! args.all)
-    client.tasks.delete(taskId, function(err) {
+    client.jobs.destroy(jobId, function(err) {
       if (err) throw err;
 
-      console.log('Task %s is scheduled for removal'.green, taskId);
+      console.log('Task %s is scheduled for removal'.green, jobId);
     });
   else
-    client.tasks.deleteAll(function(err) {
+    client.jobs.deleteAll(function(err) {
       if (err) throw err;
       console.log('All tasks are scheduled for removal'.green);
     });
