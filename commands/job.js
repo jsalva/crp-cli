@@ -72,7 +72,7 @@ function job(args, credential) {
 };
 
 function proceed(options) {
-  var jobClient = jobClient({
+  var jobClient = JobClient({
     credential: options.credential
   });
 
@@ -87,13 +87,12 @@ function proceed(options) {
 
     assert(job, 'No job has been created.');
 
-    console.log('Job successfully created.\nTask Id: ', job._id.yellow);
+    console.log('Job successfully created.\nTask Id: ', job.id.yellow);
     console.log('Data units upload progress:');
 
-    var stream = TaskClient({
-      credential: options.credential,
-      jobId: job._id
-    });
+    var stream = TaskClient(job.id, {
+      credential: options.credential
+    }).Combined;
 
     stream.on('error', error);
     stream.on('fault', error);
