@@ -1,7 +1,7 @@
 require('colors');
 var async = require('async');
 var moment = require('moment');
-var TaskClient = require('crp-task-client');
+var JobClient = require('crp-job-client');
 var error = require('../error');
 
 exports =
@@ -10,27 +10,27 @@ module.exports = list;
 module.exports.requiresAuth = true;
 
 function list(args, credential) {
-  var client = TaskClient({
+  var jobClient = JobClient({
     credential: credential
   });
 
-  client.tasks.list(function(err, tasks) {
+  jobClient.list(function(err, jobs) {
     if (err) throw err;
     var percentage = 0;
 
-    if (tasks.length) {
+    if (jobs.length) {
       console.log('created at\t\tstate\t\ttotal\t\terrors\t\tcomplete\tpending\t\tID');
     }
 
-    tasks.sort(sortTask);
-    async.eachSeries(tasks, show);
+    jobs.sort(sortJob);
+    async.eachSeries(jobs, show);
 
-    function show(task, done) {
-      var state = task.state || 'active';
-      client.tasks.progress(task._id, function(err, progress) {
+    function show(job, done) {
+      var state = job.state || 'active';
+      jobClient(job.id).view(function(err, progress) {
         if (err) error(err);
 
-        var createdAt = task.created_at;
+        var createdAt = job.created;
         if (createdAt) createdAt = moment(createdAt)
         if (createdAt) createdAt = createdAt.format('hh:mm YY-MM-DD');
         var color = 'yellow';
@@ -47,7 +47,7 @@ function list(args, credential) {
           number(progress.errors),
           number(progress.complete),
           number(progress.pending),
-          task._id);
+          job.id);
         done();
 
       });
@@ -63,7 +63,7 @@ function prop(p) {
   };
 }
 
-function sortTask(b, a) {
+function sortJob(b, a) {
   return (a.created_at || 0) - (b.created_at || 0);
 }
 

@@ -23,7 +23,8 @@
     "moment": "*",
     "async": "~0.2.8",
     "bugsnag": "*",
-    "osenv": "*"
+    "osenv": "*",
+    "newline-json": "0.0.1"
   },
   "bin": {
     "crowdprocess": "./index.js"

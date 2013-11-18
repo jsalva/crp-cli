@@ -19,18 +19,18 @@ function del(args, credential) {
     error('No task id specified');
   }
 
-  var client = JobClient({
+  var jobClient = JobClient({
     credential: credential
   });
 
   if (! args.all)
-    client.jobs.destroy(jobId, function(err) {
+    jobClient(jobId).destroy(function(err) {
       if (err) throw err;
 
       console.log('Task %s is scheduled for removal'.green, jobId);
     });
   else
-    client.jobs.deleteAll(function(err) {
+    jobClient.deleteAll(function(err) {
       if (err) throw err;
       console.log('All tasks are scheduled for removal'.green);
     });
