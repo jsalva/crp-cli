@@ -13,21 +13,21 @@ function usage(name, args) {
     alias('a', 'all');
 };
 
-function del(args, credential) {
+function del(args, token) {
   var jobId = args._[0];
   if (! jobId && !args.all) {
     error('No task id specified');
   }
 
   var jobClient = JobClient({
-    credential: credential
+    token: token
   });
 
   if (! args.all)
     jobClient(jobId).destroy(function(err) {
-      if (err) throw err;
+      if (err) return console.error(err);
 
-      console.log('Task %s is scheduled for removal'.green, jobId);
+      console.log('Deleted %s'.green, jobId);
     });
   else
     jobClient.deleteAll(function(err) {

@@ -9,30 +9,29 @@ module.exports = list;
 
 module.exports.requiresAuth = true;
 
-function list(args, credential) {
+function list(args, token) {
   var jobClient = JobClient({
-    credential: credential
+    token: token
   });
 
   jobClient.list(function(err, jobs) {
     if (err) throw err;
     var percentage = 0;
 
-    if (jobs.length) {
+    if (jobs.length)
       console.log('created at\t\tstate\t\ttotal\t\terrors\t\tcomplete\tpending\t\tID');
-    }
 
     jobs.sort(sortJob);
     async.eachSeries(jobs, show);
 
     function show(job, done) {
       var state = job.state || 'active';
-      jobClient(job.id).view(function(err, progress) {
+      jobClient(job.id).show(function(err, progress) {
         if (err) error(err);
 
         var createdAt = job.created;
         if (createdAt) createdAt = moment(createdAt)
-        if (createdAt) createdAt = createdAt.format('hh:mm YY-MM-DD');
+        if (createdAt) createdAt = createdAt.format('hh:mm:ss YY-MM-DD');
         var color = 'yellow';
         var complete = progress.total == progress.complete;
         if (complete) {
@@ -40,7 +39,7 @@ function list(args, credential) {
           if (! progress.errors && state != 'canceled') color = 'green';
           else color = 'red';
         }
-        console.log('%s\t\t%s\t\t%s\t\t%s\t\t%s\t\t%s\t\t%s'[color],
+        console.log('%s\t%s\t%s\t%s\t%s\t%s\t%s'[color],
           createdAt,
           state,
           number(progress.total),

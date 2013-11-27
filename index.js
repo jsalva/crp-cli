@@ -23,15 +23,27 @@ var command = args.shift();
 
 var commands = require('./commands');
 
-if (! command) {
-  console.error('Usage: crowdprocess <command>\n' +
+function help () {
+  return 'Usage: crowdprocess <command>\n' +
     'List of available commands:\n' +
-    commands.list().map(bullet).join('\n'));
+    commands.list().map(bullet).join('\n');
+}
+
+if (command === '--help' ||
+    command === '-h' ||
+    command === 'help') {
+  console.log(help());
+}
+  
+
+if (!command) {
+  console.error(help());
   process.exit(-1);
 }
 
 if (! ~commands.list().indexOf(command)) {
-  console.error('Unknown command:', command);
+  console.error('Unknown command:', command, '\n');
+  console.error(help());
   process.exit(-1);
 }
 

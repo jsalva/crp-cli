@@ -3,10 +3,10 @@ var fs = require('fs');
 
 exports.getToken =
 function getToken() {
-  var tokenPath = userHome() + '/.crowdprocess/auth_token.json';
-  if (fs.existsSync(tokenPath)) {
-    var token = fs.readFileSync(tokenPath, {encoding: 'utf8'});
-    token = JSON.parse(token);
-  }
+  var tokenPath = userHome() + '/.crowdprocess/auth_token';
+  if (!fs.existsSync(tokenPath))
+    return
+
+  var token = fs.readFileSync(tokenPath, {encoding: 'utf8'});
   return token;
 }

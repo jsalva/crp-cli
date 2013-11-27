@@ -22,7 +22,7 @@ function usage(name, args) {
     // demand('bid'); // FIXME: Don't need bids for now
 }
 
-function job(args, credential) {
+function job(args, token) {
   if (! fs.existsSync(args.p)) {
     console.error('program file not found: ' + args.p);
     process.exit(1);
@@ -36,7 +36,7 @@ function job(args, credential) {
     group: args.group,
     dataFilePath: args.d,
     program: program,
-    credential: credential
+    token: token
   };
 
   if (args.y)
@@ -60,7 +60,7 @@ function job(args, credential) {
 
 function proceed(options) {
   var jobClient = JobClient({
-    credential: options.credential
+    token: options.token
   });
 
   jobClient.create({

@@ -1,30 +1,32 @@
 require('colors');
 var util = require('util');
 
-var TaskClient = require('crp-task-client');
+var JobClient = require('crp-job-client');
 var error = require('../error');
 
 exports =
-module.exports = progress;
+module.exports = show;
 
 module.exports.requiresAuth = true;
 
-function progress(args, credential) {
-  var taskId = args._[0];
-  if (! taskId) {
+function show(args, token) {
+  var jobId = args._[0];
+  if (! jobId) {
     console.error('No task id specified');
     process.exit(-1);
   }
 
-  var client = TaskClient({
-    credential: credential
+  var jobs = JobClient({
+    token: token
   });
 
-  client.tasks.progress(taskId, function(err, stats) {
+  jobs(jobId).show(function(err, stats) {
     if (err) error(err);
+    console.log(stats)
+    /*
     var percentage = 0;
     if (stats.total) percentage = (stats.complete / stats.total) * 100;
-    console.log('Progress for task %s:', taskId.yellow);
+    console.log('Progress for task %s:', jobId.yellow);
 
     console.log('\tState:  :\t%s %s', stats.state, stats.cancelReason || ''); 
     console.log('\tProgress:\t%s', util.format('%d%', percentage).green);
@@ -36,7 +38,7 @@ function progress(args, credential) {
 
     if (percentage == 100) {
       console.log('You can download task results using `crowdprocess download %s`.\n', taskId);
-    }
+    }*/
   });
 
 }

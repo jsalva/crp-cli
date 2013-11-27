@@ -11,11 +11,10 @@ module.exports = login;
 module.exports.usage =
 function usage(name, args) {
   args.
-    usage('crowdprocess login [<email> [<password>]]');
+    usage('crowdprocess --login [<email> [<password>]]');
 };
 
 function login(args) {
-
   username(function(username) {
     password(function(password) {
       doLogin(username, password, function(err) {
@@ -61,10 +60,9 @@ function doLogin(username, password, cb) {
 
 var cpDir = userHome() + '/.crowdprocess';
 function writeToken(token) {
-  token.expires_at = token.expires_in + Date.now();
   if (!fs.existsSync(cpDir)) {
     fs.mkdirSync(cpDir);
   }
 
-  fs.writeFileSync(cpDir + '/auth_token.json', JSON.stringify(token));
+  fs.writeFileSync(cpDir + '/auth_token', token);
 }
