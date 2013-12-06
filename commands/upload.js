@@ -32,7 +32,7 @@ var multi = multimeter(process.stderr);
 var bar = multi.rel(0, -1);
 function upload(args, token) {
   var jobId = args._[0];;
-  var tasksFilePath = args.t || args.d; // args.d for legacy
+  var tasksFilePath = args.t || args.d || args.f // args.d for legacy
 
   if (tasksFilePath && !fs.existsSync(tasksFilePath)) {
     console.error('tasks file not found: ' + tasksFilePath);
@@ -42,14 +42,10 @@ function upload(args, token) {
   if (tasksFilePath)
     tasksSize = fs.statSync(tasksFilePath).size;
 
-
   var tasks = StreamClient.TaskStream({
     jobId: jobId,
     token: token
   });
-
-  tasks.on('error', error);
-  tasks.on('fault', error);
 
   if (tasksFilePath)
     upstream = fs.createReadStream(tasksFilePath, {
@@ -59,13 +55,10 @@ function upload(args, token) {
   else
     upstream = process.stdin;
 
-
   upstream.on('data', trackProgress);
   upstream.on('error', error);
-  var jsonParse = JSONStream.parse('*');
-  var stringifier = new Stringifier();
 
-  upstream.pipe(jsonParse).pipe(stringifier).pipe(tasks);
+  upstream.pipe(tasks);
 
   speedMeter = SpeedMeter(upstream);
 
