@@ -1,0 +1,308 @@
+package main
+
+import (
+	"encoding/json"
+	"errors"
+	"fmt"
+	"io"
+	"net/http"
+	"os"
+)
+
+const TASKS_ADDRESS = JOBS_ADDRESS + "/%s/tasks"
+const RESULTS_ADDRESS = JOBS_ADDRESS + "/%s/results"
+const RESULTS_STREAM_ADDRESS = JOBS_ADDRESS + "/%s/results?stream&timeout=5s"
+const ERRORS_ADDRESS = JOBS_ADDRESS + "/%s/errors"
+const ERRORS_STREAM_ADDRESS = JOBS_ADDRESS + "/%s/errors?stream&timeout=5s"
+
+func submitTasks(jobId string, tasksPath string) error {
+	var err error
+
+	address := fmt.Sprintf(TASKS_ADDRESS, jobId)
+
+	var tasks *os.File
+
+	if tasksPath != "" && tasksPath != "-" {
+		tasks, err = os.Open(tasksPath)
+		if err != nil {
+			panic(err.Error())
+		}
+	} else {
+		tasks = os.Stdin
+	}
+
+	reader, writer := io.Pipe()
+
+	go func() {
+		decoder := json.NewDecoder(tasks)
+		for {
+			task := new(json.RawMessage)
+			err = decoder.Decode(task)
+			if err != nil {
+				if err == io.EOF {
+					break
+				}
+				panic(err.Error())
+			}
+
+			_, err = writer.Write(append(*task, '\n'))
+			if err != nil {
+				panic(err.Error())
+			}
+		}
+		err = writer.Close()
+		if err != nil {
+			panic(err.Error())
+		}
+	}()
+
+	request, err := http.NewRequest("POST", address, reader)
+	if err != nil {
+		panic(err.Error())
+	}
+
+	authenticateRequest(request)
+
+	response, err := client.Do(request)
+	if err != nil {
+		panic(err.Error())
+	}
+
+	if response.StatusCode == 401 {
+		return errors.New("Authentication failed")
+	}
+
+	if response.StatusCode != 201 {
+		return errors.New("Something went wrong")
+	}
+
+	return nil
+}
+
+func streamTaskResults(jobId string, resultsPath string) error {
+	var err error
+
+	address := fmt.Sprintf(RESULTS_STREAM_ADDRESS, jobId)
+
+	var results *os.File
+
+	if resultsPath != "" && resultsPath != "-" {
+		results, err = os.Create(resultsPath)
+		if err != nil {
+			panic(err.Error())
+		}
+	} else {
+		results = os.Stdout
+	}
+
+	request, err := http.NewRequest("GET", address, nil)
+	if err != nil {
+		panic(err.Error())
+	}
+
+	authenticateRequest(request)
+
+	response, err := client.Do(request)
+	if err != nil {
+		panic(err.Error())
+	}
+
+	if response.StatusCode == 401 {
+		return errors.New("Authentication failed")
+	}
+
+	if response.StatusCode != 200 {
+		return errors.New("Something went wrong")
+	}
+
+	decoder := json.NewDecoder(response.Body)
+	for {
+		result := new(json.RawMessage)
+		err = decoder.Decode(result)
+		if err != nil {
+			if err == io.EOF {
+				break
+			}
+			panic(err.Error())
+		}
+
+		_, err = results.Write(append(*result, '\n'))
+		if err != nil {
+			panic(err.Error())
+		}
+	}
+
+	return nil
+}
+
+func streamTaskErrors(jobId string, errorsPath string) error {
+	var err error
+
+	address := fmt.Sprintf(ERRORS_STREAM_ADDRESS, jobId)
+
+	var erros *os.File
+
+	if errorsPath != "" && errorsPath != "-" {
+		erros, err = os.Create(errorsPath)
+		if err != nil {
+			panic(err.Error())
+		}
+	} else {
+		erros = os.Stdout
+	}
+
+	request, err := http.NewRequest("GET", address, nil)
+	if err != nil {
+		panic(err.Error())
+	}
+
+	authenticateRequest(request)
+
+	response, err := client.Do(request)
+	if err != nil {
+		panic(err.Error())
+	}
+
+	if response.StatusCode == 401 {
+		return errors.New("Authentication failed")
+	}
+
+	if response.StatusCode != 200 {
+		return errors.New("Something went wrong")
+	}
+
+	decoder := json.NewDecoder(response.Body)
+	for {
+		erro := new(json.RawMessage)
+		err = decoder.Decode(erro)
+		if err != nil {
+			if err == io.EOF {
+				break
+			}
+			panic(err.Error())
+		}
+
+		_, err = erros.Write(append(*erro, '\n'))
+		if err != nil {
+			panic(err.Error())
+		}
+	}
+
+	return nil
+}
+
+func getResults(jobId string, resultsPath string) error {
+	var err error
+
+	address := fmt.Sprintf(RESULTS_ADDRESS, jobId)
+
+	var results *os.File
+
+	if resultsPath != "" && resultsPath != "-" {
+		results, err = os.Create(resultsPath)
+		if err != nil {
+			panic(err.Error())
+		}
+	} else {
+		results = os.Stdout
+	}
+
+	request, err := http.NewRequest("GET", address, nil)
+	if err != nil {
+		panic(err.Error())
+	}
+
+	authenticateRequest(request)
+
+	response, err := client.Do(request)
+	if err != nil {
+		panic(err.Error())
+	}
+
+	if response.StatusCode == 401 {
+		return errors.New("Authentication failed")
+	}
+
+	if response.StatusCode != 200 {
+		return errors.New("Something went wrong")
+	}
+
+	decoder := json.NewDecoder(response.Body)
+
+	for {
+		data := new(json.RawMessage)
+		err = decoder.Decode(data)
+		if err != nil {
+			if err == io.EOF {
+				break
+			}
+
+			panic(err.Error())
+		}
+
+		_, err = results.Write(append(*data, '\n'))
+		if err != nil {
+			panic(err.Error())
+		}
+	}
+
+	return nil
+}
+
+func getErrors(jobId string, errorsPath string) error {
+	var err error
+
+	address := fmt.Sprintf(ERRORS_ADDRESS, jobId)
+
+	var erros *os.File
+
+	if errorsPath != "" && errorsPath != "-" {
+		erros, err = os.Create(errorsPath)
+		if err != nil {
+			panic(err.Error())
+		}
+	} else {
+		erros = os.Stdout
+	}
+
+	request, err := http.NewRequest("GET", address, nil)
+	if err != nil {
+		panic(err.Error())
+	}
+
+	authenticateRequest(request)
+
+	response, err := client.Do(request)
+	if err != nil {
+		panic(err.Error())
+	}
+
+	if response.StatusCode == 401 {
+		return errors.New("Authentication failed")
+	}
+
+	if response.StatusCode != 200 {
+		return errors.New("Something went wrong")
+	}
+
+	decoder := json.NewDecoder(response.Body)
+
+	for {
+		data := new(json.RawMessage)
+		err = decoder.Decode(data)
+		if err != nil {
+			if err == io.EOF {
+				break
+			}
+
+			panic(err.Error())
+		}
+
+		_, err = erros.Write(append(*data, '\n'))
+		if err != nil {
+			panic(err.Error())
+		}
+	}
+
+	return nil
+}
