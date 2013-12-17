@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
-	"sync"
+	"time"
 
 	"github.com/docopt/docopt.go"
 )
@@ -52,6 +52,8 @@ func createCmd(argv []string) {
 	if err != nil {
 		panic(err.Error())
 	}
+	// fmt.Println(args)
+	// return
 
 	var bid string
 	var group string
@@ -63,40 +65,81 @@ func createCmd(argv []string) {
 		panic(err.Error())
 	}
 
+	fmt.Fprintf(os.Stderr, "Job id: %s\n", jobId)
+	
+	/*
+	 *  JOB CREATED, CHECK IF WE NEED TO SUBMIT TASKS OR WAIT FOR RESULTS/ERRORS
+	 */
+
 	if !isTerminal(os.Stdin) {
 		// shift optional arguments
 		args["<results>"] = args["<tasks>"]
-
 		args["<tasks>"] = "-"
-	}
-
-	tasks, ok := args["<tasks>"].(string)
-	if !ok {
-		// no further action required
-		fmt.Printf("Created job with id: %s\n", jobId)
-		return
 	}
 
 	if !isTerminal(os.Stdout) {
 		args["<results>"] = "-"
 	}
 
-	wg := new(sync.WaitGroup)
-	results, ok := args["<results>"].(string)
-	if ok {
-		go func() {
-			wg.Add(1)
-			defer wg.Done()
-			streamTaskResults(jobId, results)
-		}()
+	tasks, ok := args["<tasks>"].(string)
+	if !ok {
+		// no further action required
+		return
 	}
 
-	err = submitTasks(jobId, tasks)
+	numTasks := 0
+	numResults := 0
+	numErrors := 0
+	tasksChannel := make(chan int, 1000000)
+	resultsChannel := make(chan int, 1000000)
+	errorsChannel := make(chan int, 1000)
+
+	results, ok := args["<results>"].(string)
+	if ok {
+		go streamTaskResults(jobId, results, resultsChannel)
+		go streamTaskErrors(jobId, results, errorsChannel)
+	}
+
+	// show progress
+	go func() {
+		for {
+			select {
+			case numTasks = <-tasksChannel:
+			case numResults = <-resultsChannel:
+			case numErrors = <-errorsChannel:
+			}
+
+			if args["<results>"] != "" && args["<results>"] != "-" {
+				fmt.Fprintf(os.Stderr, "Tasks: %d   ", numTasks)
+				if ok {
+					fmt.Fprintf(os.Stderr, "Results: %d   ", numResults)
+					fmt.Fprintf(os.Stderr, "Errors: %d   ", numErrors)
+				}
+				fmt.Fprintf(os.Stderr, "\r")
+			}
+		}
+	}()
+
+	numTasks, err = submitTasks(jobId, tasks, tasksChannel)
 	if err != nil {
 		panic(err.Error())
 	}
 
-	wg.Wait()
+	for {
+		if !ok || numTasks <= numResults + numErrors {
+			break
+		}
+		time.Sleep(100 * time.Millisecond)
+	}
+
+	if args["<results>"] != "" && args["<results>"] != "-" {
+		fmt.Fprintf(os.Stderr, "Tasks: %d   ", numTasks)
+		if ok {
+			fmt.Fprintf(os.Stderr, "Results: %d   ", numResults)
+			fmt.Fprintf(os.Stderr, "Errors: %d   ", numErrors)
+		}
+		fmt.Fprintf(os.Stderr, "\n")
+	}
 }
 
 func deleteCmd(argv []string) {
@@ -114,6 +157,8 @@ func deleteCmd(argv []string) {
 		fmt.Println(err.Error())
 		return
 	}
+
+	fmt.Println("Job deleted")
 }
 
 func errorsCmd(argv []string) {
@@ -245,5 +290,5 @@ func uploadCmd(argv []string) {
 		panic(err.Error())
 	}
 
-	submitTasks(uploadArgs["<job>"].(string), uploadArgs["<tasks>"].(string))
+	submitTasks(uploadArgs["<job>"].(string), uploadArgs["<tasks>"].(string), nil)
 }

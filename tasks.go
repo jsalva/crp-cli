@@ -15,7 +15,7 @@ const RESULTS_STREAM_ADDRESS = JOBS_ADDRESS + "/%s/results?stream&timeout=5s"
 const ERRORS_ADDRESS = JOBS_ADDRESS + "/%s/errors"
 const ERRORS_STREAM_ADDRESS = JOBS_ADDRESS + "/%s/errors?stream&timeout=5s"
 
-func submitTasks(jobId string, tasksPath string) error {
+func submitTasks(jobId string, tasksPath string, channel chan int) (int, error) {
 	var err error
 
 	address := fmt.Sprintf(TASKS_ADDRESS, jobId)
@@ -32,6 +32,7 @@ func submitTasks(jobId string, tasksPath string) error {
 	}
 
 	reader, writer := io.Pipe()
+	num := 0
 
 	go func() {
 		decoder := json.NewDecoder(tasks)
@@ -48,6 +49,12 @@ func submitTasks(jobId string, tasksPath string) error {
 			_, err = writer.Write(append(*task, '\n'))
 			if err != nil {
 				panic(err.Error())
+			}
+
+			num++;
+			select {
+			case channel <- num:
+			default:
 			}
 		}
 		err = writer.Close()
@@ -69,17 +76,17 @@ func submitTasks(jobId string, tasksPath string) error {
 	}
 
 	if response.StatusCode == 401 {
-		return errors.New("Authentication failed")
+		return 0, errors.New("Authentication failed")
 	}
 
 	if response.StatusCode != 201 {
-		return errors.New("Something went wrong")
+		return 0, errors.New("Something went wrong")
 	}
 
-	return nil
+	return num, nil
 }
 
-func streamTaskResults(jobId string, resultsPath string) error {
+func streamTaskResults(jobId string, resultsPath string, channel chan int) (int, error) {
 	var err error
 
 	address := fmt.Sprintf(RESULTS_STREAM_ADDRESS, jobId)
@@ -108,13 +115,14 @@ func streamTaskResults(jobId string, resultsPath string) error {
 	}
 
 	if response.StatusCode == 401 {
-		return errors.New("Authentication failed")
+		return 0, errors.New("Authentication failed")
 	}
 
 	if response.StatusCode != 200 {
-		return errors.New("Something went wrong")
+		return 0, errors.New("Something went wrong")
 	}
 
+	num := 0
 	decoder := json.NewDecoder(response.Body)
 	for {
 		result := new(json.RawMessage)
@@ -130,12 +138,18 @@ func streamTaskResults(jobId string, resultsPath string) error {
 		if err != nil {
 			panic(err.Error())
 		}
+
+		num++;
+		select {
+		case channel <- num:
+		default:
+		}
 	}
 
-	return nil
+	return num, nil
 }
 
-func streamTaskErrors(jobId string, errorsPath string) error {
+func streamTaskErrors(jobId string, errorsPath string, channel chan int) (int, error) {
 	var err error
 
 	address := fmt.Sprintf(ERRORS_STREAM_ADDRESS, jobId)
@@ -164,13 +178,14 @@ func streamTaskErrors(jobId string, errorsPath string) error {
 	}
 
 	if response.StatusCode == 401 {
-		return errors.New("Authentication failed")
+		return 0, errors.New("Authentication failed")
 	}
 
 	if response.StatusCode != 200 {
-		return errors.New("Something went wrong")
+		return 0, errors.New("Something went wrong")
 	}
 
+	num := 0
 	decoder := json.NewDecoder(response.Body)
 	for {
 		erro := new(json.RawMessage)
@@ -186,9 +201,15 @@ func streamTaskErrors(jobId string, errorsPath string) error {
 		if err != nil {
 			panic(err.Error())
 		}
+
+		num++;
+		select {
+		case channel <- num:
+		default:
+		}
 	}
 
-	return nil
+	return num, nil
 }
 
 func getResults(jobId string, resultsPath string, channel chan int) (int, error) {
