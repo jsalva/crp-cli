@@ -30,7 +30,6 @@ func authCmd(argv []string) {
 			fmt.Println(err.Error())
 			return
 		}
-		fmt.Println("Logged in")
 		return
 	}
 
@@ -40,7 +39,6 @@ func authCmd(argv []string) {
 			fmt.Println(err.Error())
 			return
 		}
-		fmt.Println("Logged out")
 		return
 	}
 }
@@ -116,8 +114,6 @@ func deleteCmd(argv []string) {
 		fmt.Println(err.Error())
 		return
 	}
-
-	fmt.Println("Job deleted")
 }
 
 func errorsCmd(argv []string) {
