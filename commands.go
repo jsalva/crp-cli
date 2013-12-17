@@ -131,10 +131,27 @@ func errorsCmd(argv []string) {
 	}
 
 	path, _ := errorsArgs["<path>"].(string)
+	num := 0
+	channel := make(chan int)
 
-	err = getErrors(errorsArgs["<job>"].(string), path)
+	showStatus := path != "" && path != "-"
+
+	if showStatus {
+		go func() {
+			for {
+				num = <-channel
+				fmt.Printf("Number of errors: %d\r", num)
+			}
+		}()
+	}
+
+	num, err = getErrors(errorsArgs["<job>"].(string), path, channel)
 	if err != nil {
 		fmt.Println(err.Error())
+	}
+
+	if showStatus {
+		fmt.Printf("Number of errors: %d\n", num)
 	}
 }
 
