@@ -171,10 +171,27 @@ func resultsCmd(argv []string) {
 	}
 
 	path, _ := resultsArgs["<path>"].(string)
+	num := 0
+	channel := make(chan int)
 
-	err = getResults(resultsArgs["<job>"].(string), path)
+	showStatus := path != "" && path != "-"
+
+	if showStatus {
+		go func() {
+			for {
+				num = <-channel
+				fmt.Printf("Number of results: %d\r", num)
+			}
+		}()
+	}
+
+	num, err = getResults(resultsArgs["<job>"].(string), path, channel)
 	if err != nil {
 		fmt.Println(err.Error())
+	}
+
+	if showStatus {
+		fmt.Printf("Number of results: %d\n", num)
 	}
 }
 
@@ -199,7 +216,7 @@ func showCmd(argv []string) {
 	fmt.Println("Bid:", job.Bid)
 	fmt.Println("Group:", job.Group)
 	fmt.Println("Browser hours:", job.BrowserHours/1000/60/60)
-	fmt.Println("Pending:", job.Total - job.Finished - job.Failed)
+	fmt.Println("Pending:", job.Total-job.Finished-job.Failed)
 	fmt.Println("Failed:", job.Failed)
 	fmt.Println("Finished:", job.Finished)
 	fmt.Println("Total:", job.Total)
