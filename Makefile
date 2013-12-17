@@ -15,4 +15,4 @@ install: all
 uninstall:
 	rm -f $(DESTDIR)$(PREFIX)/bin/crowdprocess
 
-.PHONY: all clean install uninstall
+.PHONY: all crowdprocess clean install uninstall
