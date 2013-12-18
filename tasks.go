@@ -197,9 +197,11 @@ func streamTaskErrors(jobId string, errorsPath string, channel chan int) (int, e
 			panic(err.Error())
 		}
 
-		_, err = erros.Write(append(*erro, '\n'))
-		if err != nil {
-			panic(err.Error())
+		if errorsPath != "" {
+			_, err = erros.Write(append(*erro, '\n'))
+			if err != nil {
+				panic(err.Error())
+			}
 		}
 
 		num++;

@@ -52,8 +52,6 @@ func createCmd(argv []string) {
 	if err != nil {
 		panic(err.Error())
 	}
-	// fmt.Println(args)
-	// return
 
 	var bid string
 	var group string
@@ -67,10 +65,6 @@ func createCmd(argv []string) {
 
 	fmt.Fprintf(os.Stderr, "Job id: %s\n", jobId)
 	
-	/*
-	 *  JOB CREATED, CHECK IF WE NEED TO SUBMIT TASKS OR WAIT FOR RESULTS/ERRORS
-	 */
-
 	if !isTerminal(os.Stdin) {
 		// shift optional arguments
 		args["<results>"] = args["<tasks>"]
@@ -97,7 +91,7 @@ func createCmd(argv []string) {
 	results, ok := args["<results>"].(string)
 	if ok {
 		go streamTaskResults(jobId, results, resultsChannel)
-		go streamTaskErrors(jobId, results, errorsChannel)
+		go streamTaskErrors(jobId, "", errorsChannel)
 	}
 
 	// show progress
