@@ -51,7 +51,7 @@ func submitTasks(jobId string, tasksPath string, channel chan int) (int, error) 
 				panic(err.Error())
 			}
 
-			num++;
+			num++
 			select {
 			case channel <- num:
 			default:
@@ -139,7 +139,7 @@ func streamTaskResults(jobId string, resultsPath string, channel chan int) (int,
 			panic(err.Error())
 		}
 
-		num++;
+		num++
 		select {
 		case channel <- num:
 		default:
@@ -204,7 +204,7 @@ func streamTaskErrors(jobId string, errorsPath string, channel chan int) (int, e
 			}
 		}
 
-		num++;
+		num++
 		select {
 		case channel <- num:
 		default:
@@ -269,7 +269,7 @@ func getResults(jobId string, resultsPath string, channel chan int) (int, error)
 			panic(err.Error())
 		}
 
-		num++;
+		num++
 		select {
 		case channel <- num:
 		default:
@@ -334,7 +334,7 @@ func getErrors(jobId string, errorsPath string, channel chan int) (int, error) {
 			panic(err.Error())
 		}
 
-		num++;
+		num++
 		select {
 		case channel <- num:
 		default:
