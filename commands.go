@@ -140,20 +140,28 @@ func createCmd(argv []string) {
 func deleteCmd(argv []string) {
 	var err error
 
-	usage := `Usage: crowdprocess delete <job>`
+	usage := `Usage: crowdprocess delete [<job>]`
 
 	deleteArgs, err := docopt.Parse(usage, argv, true, "crowdprocess "+VERSION, false)
 	if err != nil {
 		panic(err.Error())
 	}
 
-	err = deleteJob(deleteArgs["<job>"].(string))
-	if err != nil {
-		fmt.Println(err.Error())
-		return
-	}
+	jobId, ok := deleteArgs["<job>"].(string)
 
-	fmt.Println("Job deleted")
+	if ok {
+		err = deleteJob(jobId)
+		if err != nil {
+			fmt.Println(err.Error())
+			return
+		}
+	} else {
+		err = deleteJobs()
+		if err != nil {
+			fmt.Println(err.Error())
+			return
+		}
+	}
 }
 
 func errorsCmd(argv []string) {

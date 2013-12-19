@@ -194,3 +194,29 @@ func deleteJob(id string) error {
 
 	return nil
 }
+
+func deleteJobs() error {
+	var err error
+
+	request, err := http.NewRequest("DELETE", JOBS_ADDRESS, nil)
+	if err != nil {
+		panic(err.Error())
+	}
+
+	authenticateRequest(request)
+
+	response, err := client.Do(request)
+	if err != nil {
+		panic(err.Error())
+	}
+
+	if response.StatusCode == 401 {
+		return errors.New("Authentication failed")
+	}
+
+	if response.StatusCode != 204 {
+		return errors.New("Something went wrong")
+	}
+
+	return nil
+}
