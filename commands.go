@@ -64,7 +64,7 @@ func createCmd(argv []string) {
 	}
 
 	fmt.Fprintf(os.Stderr, "Job id: %s\n", jobId)
-	
+
 	if !isTerminal(os.Stdin) {
 		// shift optional arguments
 		args["<results>"] = args["<tasks>"]
@@ -94,7 +94,7 @@ func createCmd(argv []string) {
 		go streamTaskErrors(jobId, "", errorsChannel)
 	}
 
-	// show progress
+	showProgress := args["<results>"] != "" && args["<results>"] != "-" || !isTerminal(os.Stdout)
 	go func() {
 		for {
 			select {
@@ -103,7 +103,7 @@ func createCmd(argv []string) {
 			case numErrors = <-errorsChannel:
 			}
 
-			if args["<results>"] != "" && args["<results>"] != "-" {
+			if showProgress {
 				fmt.Fprintf(os.Stderr, "Tasks: %d   ", numTasks)
 				if ok {
 					fmt.Fprintf(os.Stderr, "Results: %d   ", numResults)
@@ -120,13 +120,13 @@ func createCmd(argv []string) {
 	}
 
 	for {
-		if !ok || numTasks <= numResults + numErrors {
+		if !ok || numTasks <= numResults+numErrors {
 			break
 		}
 		time.Sleep(100 * time.Millisecond)
 	}
 
-	if args["<results>"] != "" && args["<results>"] != "-" {
+	if showProgress {
 		fmt.Fprintf(os.Stderr, "Tasks: %d   ", numTasks)
 		if ok {
 			fmt.Fprintf(os.Stderr, "Results: %d   ", numResults)
