@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"os"
 	"os/user"
+	"path"
 
 	pass "code.google.com/p/gopass"
 )
@@ -70,12 +71,7 @@ func login(username, password string) error {
 		panic(err.Error())
 	}
 
-	usr, err := user.Current()
-	if err != nil {
-		panic(err.Error())
-	}
-
-	err = ioutil.WriteFile(usr.HomeDir+TOKEN_PATH, []byte(token.Id), 0600)
+	err = ioutil.WriteFile(getTokenDir(), []byte(token.Id), 0600)
 	if err != nil {
 		panic(err.Error())
 	}
@@ -86,14 +82,9 @@ func login(username, password string) error {
 func logout() error {
 	var err error
 
-	usr, err := user.Current()
-	if err != nil {
-		panic(err.Error())
-	}
+	tokenDir := getTokenDir()
 
-	tokenPath := usr.HomeDir + TOKEN_PATH
-
-	token, err := ioutil.ReadFile(tokenPath)
+	token, err := ioutil.ReadFile(tokenDir)
 	if err != nil {
 		return errors.New("Already logged out")
 	}
@@ -118,7 +109,7 @@ func logout() error {
 		return errors.New("Something went wrong")
 	}
 
-	err = os.Remove(tokenPath)
+	err = os.Remove(tokenDir)
 	if err != nil {
 		panic(err.Error())
 	}
@@ -143,18 +134,35 @@ func authenticateRequest(request *http.Request) {
 		return
 	}
 
-	// token
-	usr, err := user.Current()
-	if err != nil {
-		panic(err.Error())
-	}
-
-	tokenPath := usr.HomeDir + TOKEN_PATH
-
-	token, err := ioutil.ReadFile(tokenPath)
+	token, err := ioutil.ReadFile(getTokenDir())
 	if err == nil {
 		request.Header.Add("Authorization", "Token "+string(token))
 
 		return
 	}
+}
+
+func getUserHomeDir() string {
+	usr, err := user.Current()
+	if err == nil {
+		return usr.HomeDir
+	}
+
+	home := os.Getenv("HOMEDRIVE") + os.Getenv("HOMEPATH")
+	if home != "" {
+		return home
+	}
+
+	home = os.Getenv("USERPROFILE")
+	if home != "" {
+		return home
+	}
+
+	return os.Getenv("HOME")
+}
+
+func getTokenDir() string {
+	home := getUserHomeDir()
+
+	return path.Join(home, TOKEN_PATH)
 }
