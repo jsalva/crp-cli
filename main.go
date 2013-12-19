@@ -17,7 +17,7 @@ var PASSWORD string
 
 var client = &http.Client{}
 
-const USAGE = `Usage: crowdprocess [options] <command> [<args>...]
+const USAGE = `Usage: crowdprocess [options] [<command>] [<args>...]
 
 Options:
   -h, --help                   Display this help and exit
@@ -43,7 +43,7 @@ func main() {
 		panic(err.Error())
 	}
 
-	cmd := args["<command>"].(string)
+	cmd, _ := args["<command>"].(string)
 	cmdArgs := args["<args>"].([]string)
 
 	userpass, ok := args["--user"].(string)
@@ -76,6 +76,8 @@ func main() {
 		showCmd(argv)
 	case "upload":
 		uploadCmd(argv)
+	case "":
+		fmt.Print(USAGE)
 	default:
 		fmt.Printf("crowdprocess: '%s' is not a crowdprocess command. See 'crowdprocess --help'.\n", cmd)
 	}
