@@ -167,7 +167,7 @@ func errorsCmd(argv []string) {
 
 	path, _ := errorsArgs["<path>"].(string)
 	num := 0
-	channel := make(chan int)
+	channel := make(chan int, 1000)
 
 	showStatus := path != "" && path != "-"
 
@@ -224,7 +224,7 @@ func resultsCmd(argv []string) {
 
 	path, _ := resultsArgs["<path>"].(string)
 	num := 0
-	channel := make(chan int)
+	channel := make(chan int, 1000000)
 
 	showStatus := path != "" && path != "-"
 
