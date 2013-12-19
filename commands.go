@@ -116,7 +116,8 @@ func createCmd(argv []string) {
 
 	numTasks, err = submitTasks(jobId, tasks, tasksChannel)
 	if err != nil {
-		panic(err.Error())
+		fmt.Println(err.Error())
+		return
 	}
 
 	for {
