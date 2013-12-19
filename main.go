@@ -20,8 +20,8 @@ var client = &http.Client{}
 const USAGE = `Usage: crowdprocess [options] <command> [<args>...]
 
 Options:
-  -h, --help                   Output version information and exit
-  -v, --version                Display this help and exit
+  -h, --help                   Display this help and exit
+  -v, --version                Output version information and exit
   -u, --user <email:password>  Authenticate the command using email and password
 
 Commands:
