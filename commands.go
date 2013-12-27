@@ -60,7 +60,8 @@ func createCmd(argv []string) {
 
 	jobId, err := createJob(args["<program>"].(string), bid, group)
 	if err != nil {
-		panic(err.Error())
+		fmt.Println(err.Error())
+		return
 	}
 
 	fmt.Fprintf(os.Stderr, "Job id: %s\n", jobId)
