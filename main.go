@@ -10,7 +10,7 @@ import (
 
 const ADDRESS = "https://api.crowdprocess.com"
 
-var VERSION string
+const VERSION = "0.8.0"
 
 var USERNAME string
 var PASSWORD string
