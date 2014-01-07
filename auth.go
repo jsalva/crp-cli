@@ -71,6 +71,11 @@ func login(username, password string) error {
 		panic(err.Error())
 	}
 
+	err = os.MkdirAll(path.Join(getUserHomeDir(), "/.crowdprocess"), 0755)
+	if err != nil {
+		panic(err.Error())
+	}
+
 	err = ioutil.WriteFile(getTokenDir(), []byte(token.Id), 0600)
 	if err != nil {
 		panic(err.Error())
