@@ -4,10 +4,12 @@ PREFIX = /usr/local
 all: crowdprocess
 
 crowdprocess:
-	@go build -o crowdprocess-linux-amd64
-	@GOARCH=386 go build -o crowdprocess-linux-386
-	@GOARCH=arm go build -o crowdprocess-linux-arm
-	# @GOARCH=386 GOOS=windows go build -o crowdprocess-win
+	@go build -o crowdprocess
+	# @GOOS=linux GOARCH=amd64 go build -o crowdprocess-linux-amd64
+	# @GOOS=linux GOARCH=386 go build -o crowdprocess-linux-386
+	# @GOOS=linux GOARCH=arm go build -o crowdprocess-linux-arm
+	# @GOOS=windows GOARCH=386 go build -o crowdprocess-win
+	# @GOOS=darwin GOARCH=amd64 go build -o crowdprocess-darwin-amd64
 
 clean:
 	rm -f cli
