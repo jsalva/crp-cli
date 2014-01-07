@@ -11,9 +11,9 @@ import (
 
 const TASKS_ADDRESS = JOBS_ADDRESS + "/%s/tasks"
 const RESULTS_ADDRESS = JOBS_ADDRESS + "/%s/results"
-const RESULTS_STREAM_ADDRESS = JOBS_ADDRESS + "/%s/results?stream&timeout=5s"
+const RESULTS_STREAM_ADDRESS = JOBS_ADDRESS + "/%s/results?stream"
 const ERRORS_ADDRESS = JOBS_ADDRESS + "/%s/errors"
-const ERRORS_STREAM_ADDRESS = JOBS_ADDRESS + "/%s/errors?stream&timeout=5s"
+const ERRORS_STREAM_ADDRESS = JOBS_ADDRESS + "/%s/errors?stream"
 
 func submitTasks(jobId string, tasksPath string, channel chan int) (int, error) {
 	var err error
