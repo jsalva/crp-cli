@@ -10,7 +10,7 @@ import (
 	"os/user"
 	"path"
 
-	pass "code.google.com/p/gopass"
+	"github.com/howeyc/gopass"
 )
 
 const AUTH_ADDRESS = ADDRESS + "/tokens"
@@ -36,10 +36,8 @@ func login(username, password string) error {
 
 	// password not provided, ask for it
 	if password == "" {
-		password, err = pass.GetPass("Password: ")
-		if err != nil {
-			panic(err.Error())
-		}
+		fmt.Printf("Password: ")
+		password = string(gopass.GetPasswd())
 	}
 
 	request, err := http.NewRequest("POST", AUTH_ADDRESS, nil)
@@ -128,10 +126,8 @@ func authenticateRequest(request *http.Request) {
 	// username + password
 	if USERNAME != "" {
 		if PASSWORD == "" {
-			PASSWORD, err = pass.GetPass("Password: ")
-			if err != nil {
-				panic(err.Error())
-			}
+			fmt.Printf("Password: ")
+			PASSWORD = string(gopass.GetPasswd())
 		}
 
 		request.SetBasicAuth(USERNAME, PASSWORD)
