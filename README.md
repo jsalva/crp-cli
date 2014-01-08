@@ -27,3 +27,28 @@ Commands:
   show       Show job information
   upload     Submit tasks for a job
 ```
+
+# Example
+```bash
+> crowdprocess auth login
+Email: email@example.com
+Password:
+> crowdprocess create program.js tasks.json results.json
+Job id: 76c9894b-3f09-4a20-ad5e-90946d2916ca
+Tasks: 10   Results: 10   Errors: 0
+> crowdprocess list
+Id                                     Created                            Tasks       Status
+76c9894b-3f09-4a20-ad5e-90946d2916ca   2014-01-08 11:37:43.673 +0000 WET         10   active
+53a17195-dc00-4f65-bfbc-41f5e6ca356a   2014-01-07 18:28:48.729 +0000 WET         10   active
+> crowdprocess results 76c9894b-3f09-4a20-ad5e-90946d2916ca
+4
+3
+7
+8
+6
+5
+1
+10
+9
+2
+```
