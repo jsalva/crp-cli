@@ -76,6 +76,13 @@ Job id: 76c9894b-3f09-4a20-ad5e-90946d2916ca
 Tasks: 6    Results: 6    Errors: 0
 ```
 
+Or using shell pipes:
+```bash
+$ cat tasks | ./crowdprocess create program.js - > results
+Job id: 76c9894b-3f09-4a20-ad5e-90946d2916ca
+Tasks: 6    Results: 6    Errors: 0
+```
+
 The results file should have something like this:
 ```bash
 $ cat results
