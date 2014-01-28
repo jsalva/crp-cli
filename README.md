@@ -33,7 +33,7 @@ Download the crowdprocess CLI from https://github.com/CrowdProcess/crp-cli/relea
 
 Linux:
 ```bash
-$ sudo wget https://github.com/CrowdProcess/crp-cli/releases/download/0.8.0/crowdprocess-linux-386 -O /usr/local/bin/crowdprocess && sudo chmod +x /usr/local/bin/crowdprocess
+$ sudo wget https://github.com/CrowdProcess/crp-cli/releases/download/0.8.1/crowdprocess-linux-386 -O /usr/local/bin/crowdprocess && sudo chmod +x /usr/local/bin/crowdprocess
 ```
 
 ## Login
