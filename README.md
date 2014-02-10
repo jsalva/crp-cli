@@ -46,7 +46,8 @@ $ sudo curl -L https://github.com/CrowdProcess/crp-cli/releases/download/0.8.1/c
 ```
 mkdir -p ~/bin
 wget https://github.com/CrowdProcess/crp-cli/releases/download/0.8.1/crowdprocess-linux-386 -O ~/bin/crowdprocess
-echo "alias crowdprocess=~/bin/crowdprocess"
+echo "alias crowdprocess=~/bin/crowdprocess" >> ~/.bashrc
+. ~/.bashrc
 ```
 
 
