@@ -31,10 +31,16 @@ Commands:
 ## Install
 Download the crowdprocess CLI from https://github.com/CrowdProcess/crp-cli/releases/latest into a $PATH directory.
 
-Linux:
+### Linux
 ```bash
 $ sudo wget https://github.com/CrowdProcess/crp-cli/releases/download/0.8.1/crowdprocess-linux-386 -O /usr/local/bin/crowdprocess && sudo chmod +x /usr/local/bin/crowdprocess
 ```
+
+### OSX
+```
+$ sudo curl -L https://github.com/CrowdProcess/crp-cli/releases/download/0.8.1/crowdprocess-darwin-amd64 -o /usr/local/bin/crowdprocess && sudo chmod +x /usr/local/bin/crowdprocess
+```
+
 
 ## Login
 Login with your CrowdProcess account. If you don't have an account, you can quicky create a free one in the [CrowdProcess website](https://crowdprocess.com/register).
