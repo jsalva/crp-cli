@@ -9,11 +9,11 @@ import (
 	"os"
 )
 
-const TASKS_ADDRESS = JOBS_ADDRESS + "/%s/tasks"
-const RESULTS_ADDRESS = JOBS_ADDRESS + "/%s/results"
-const RESULTS_STREAM_ADDRESS = JOBS_ADDRESS + "/%s/results?stream"
-const ERRORS_ADDRESS = JOBS_ADDRESS + "/%s/errors"
-const ERRORS_STREAM_ADDRESS = JOBS_ADDRESS + "/%s/errors?stream"
+var TASKS_ADDRESS = JOBS_ADDRESS + "/%s/tasks"
+var RESULTS_ADDRESS = JOBS_ADDRESS + "/%s/results"
+var RESULTS_STREAM_ADDRESS = JOBS_ADDRESS + "/%s/results?stream"
+var ERRORS_ADDRESS = JOBS_ADDRESS + "/%s/errors"
+var ERRORS_STREAM_ADDRESS = JOBS_ADDRESS + "/%s/errors?stream"
 
 func submitTasks(jobId string, tasksPath string, channel chan int) (int, error) {
 	var err error

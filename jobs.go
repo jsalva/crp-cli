@@ -11,7 +11,7 @@ import (
 	"time"
 )
 
-const JOBS_ADDRESS = ADDRESS + "/jobs"
+var JOBS_ADDRESS = ADDRESS + "/jobs"
 
 type Job struct {
 	Id           string

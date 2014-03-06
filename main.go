@@ -3,12 +3,13 @@ package main
 import (
 	"fmt"
 	"net/http"
+	"os"
 	"strings"
 
 	"github.com/docopt/docopt.go"
 )
 
-const ADDRESS = "https://api.crowdprocess.com"
+var ADDRESS = getAddress() // "https://api.crowdprocess.com"
 
 const VERSION = "0.8.1"
 
@@ -34,6 +35,14 @@ Commands:
   show       Show job information
   upload     Submit tasks for a job
 `
+
+func getAddress() string {
+	crpAddress := os.Getenv("CRP_ADDRESS")
+	if crpAddress != "" {
+		return crpAddress
+	}
+	return "https://api.crowdprocess.com"
+}
 
 func main() {
 	var err error

@@ -13,7 +13,7 @@ import (
 	"github.com/howeyc/gopass"
 )
 
-const AUTH_ADDRESS = ADDRESS + "/tokens"
+var AUTH_ADDRESS = ADDRESS + "/tokens"
 const TOKEN_PATH = "/.crowdprocess/token"
 
 func login(username, password string) error {
