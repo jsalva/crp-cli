@@ -17,7 +17,7 @@ type Job struct {
 	Id           string
 	Created      time.Time
 	Status       string
-	Bid          int
+	Bid          float64
 	Group        string
 	BrowserHours int
 	Failed       int
