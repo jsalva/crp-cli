@@ -276,16 +276,18 @@ func showCmd(argv []string) {
 		fmt.Println(err.Error())
 		return
 	}
-	fmt.Println("Id:", job.Id)
-	fmt.Println("Created:", job.Created.Local())
-	fmt.Println("Status:", job.Status)
-	fmt.Println("Bid:", job.Bid)
-	fmt.Println("Group:", job.Group)
-	fmt.Println("Browser hours:", job.BrowserHours/1000/60/60)
-	fmt.Println("Pending:", job.Total-job.Finished-job.Failed)
-	fmt.Println("Failed:", job.Failed)
-	fmt.Println("Finished:", job.Finished)
-	fmt.Println("Total:", job.Total)
+
+	fmt.Printf("%-13s %s\n", "Id", job.Id)
+	fmt.Printf("%-13s %s\n", "Created", job.Created.Local().Format("2006-01-02 15:04:05"))
+	fmt.Printf("%-13s %s\n", "Modified", job.Modified.Local().Format("2006-01-02 15:04:05"))
+	fmt.Printf("%-13s %s\n", "Status", job.Status)
+	fmt.Printf("%-13s %.2f\n", "Bid", job.Bid)
+	fmt.Printf("%-13s %s\n", "Group", job.Group)
+	fmt.Printf("%-13s %.2f\n", "Browser hours", float64(job.BrowserHours)/1000/60/60)
+	fmt.Printf("%-13s %d\n", "Pending", job.Total-job.Finished-job.Failed)
+	fmt.Printf("%-13s %d\n", "Failed", job.Failed)
+	fmt.Printf("%-13s %d\n", "Finished", job.Finished)
+	fmt.Printf("%-13s %d\n", "Total", job.Total)
 }
 
 func uploadCmd(argv []string) {

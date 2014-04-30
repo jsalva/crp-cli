@@ -16,6 +16,7 @@ var JOBS_ADDRESS = ADDRESS + "/jobs"
 type Job struct {
 	Id           string
 	Created      time.Time
+	Modified     time.Time
 	Status       string
 	Bid          float64
 	Group        string
