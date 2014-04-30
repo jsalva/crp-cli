@@ -216,9 +216,13 @@ func listCmd(argv []string) {
 		return
 	}
 
-	fmt.Println("Id                                     Created                            Tasks       Status")
+	fmt.Printf("%-36s   %-19s   %-8s   %-6s\n", "Id", "Created", "Tasks", "Status")
 	for _, job := range jobs {
-		fmt.Printf("%-36s   %-33s   %8d   %-6s\n", job.Id, job.Created.Local(), job.Total, job.Status)
+		fmt.Printf("%-36s   %-19s   %8d   %-6s\n",
+			job.Id,
+			job.Created.Local().Format("2006-01-02 15:04:05"),
+			job.Total,
+			job.Status)
 	}
 }
 
