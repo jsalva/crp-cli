@@ -31,7 +31,7 @@ func createJob(programPath string, bid string, group string) (string, error) {
 
 	program, err := os.Open(programPath)
 	if err != nil {
-		panic(err.Error())
+		return "", err
 	}
 
 	// Prepare multipart request
@@ -40,36 +40,36 @@ func createJob(programPath string, bid string, group string) (string, error) {
 
 	part, err := writer.CreateFormFile("program", "program.js")
 	if err != nil {
-		panic(err.Error())
+		return "", err
 	}
 
 	_, err = io.Copy(part, program)
 	if err != nil {
-		panic(err.Error())
+		return "", err
 	}
 
 	if bid != "" {
 		err = writer.WriteField("bid", bid)
 		if err != nil {
-			panic(err.Error())
+			return "", err
 		}
 	}
 
 	if group != "" {
 		err = writer.WriteField("group", group)
 		if err != nil {
-			panic(err.Error())
+			return "", err
 		}
 	}
 
 	err = writer.Close()
 	if err != nil {
-		panic(err.Error())
+		return "", err
 	}
 
 	request, err := http.NewRequest("POST", JOBS_ADDRESS, body)
 	if err != nil {
-		panic(err.Error())
+		return "", err
 	}
 
 	request.Header.Set("Content-Type", writer.FormDataContentType())
@@ -78,7 +78,7 @@ func createJob(programPath string, bid string, group string) (string, error) {
 
 	response, err := client.Do(request)
 	if err != nil {
-		panic(err.Error())
+		return "", err
 	}
 
 	if response.StatusCode == 401 {
@@ -96,7 +96,7 @@ func createJob(programPath string, bid string, group string) (string, error) {
 	decoder := json.NewDecoder(response.Body)
 	err = decoder.Decode(&job)
 	if err != nil {
-		panic(err.Error())
+		return "", err
 	}
 
 	return job.Id, nil
@@ -107,14 +107,14 @@ func listJobs() ([]Job, error) {
 
 	request, err := http.NewRequest("GET", JOBS_ADDRESS, nil)
 	if err != nil {
-		panic(err.Error())
+		return nil, err
 	}
 
 	authenticateRequest(request)
 
 	response, err := client.Do(request)
 	if err != nil {
-		panic(err.Error())
+		return nil, err
 	}
 
 	if response.StatusCode == 401 {
@@ -130,7 +130,7 @@ func listJobs() ([]Job, error) {
 	decoder := json.NewDecoder(response.Body)
 	err = decoder.Decode(&jobs)
 	if err != nil {
-		panic(err.Error())
+		return nil, err
 	}
 
 	return jobs, nil
@@ -141,14 +141,14 @@ func showJob(id string) (*Job, error) {
 
 	request, err := http.NewRequest("GET", JOBS_ADDRESS+"/"+id, nil)
 	if err != nil {
-		panic(err.Error())
+		return nil, err
 	}
 
 	authenticateRequest(request)
 
 	response, err := client.Do(request)
 	if err != nil {
-		panic(err.Error())
+		return nil, err
 	}
 
 	if response.StatusCode == 401 {
@@ -164,7 +164,7 @@ func showJob(id string) (*Job, error) {
 	decoder := json.NewDecoder(response.Body)
 	err = decoder.Decode(job)
 	if err != nil {
-		panic(err.Error())
+		return nil, err
 	}
 
 	return job, nil
@@ -175,14 +175,14 @@ func deleteJob(id string) error {
 
 	request, err := http.NewRequest("DELETE", JOBS_ADDRESS+"/"+id, nil)
 	if err != nil {
-		panic(err.Error())
+		return err
 	}
 
 	authenticateRequest(request)
 
 	response, err := client.Do(request)
 	if err != nil {
-		panic(err.Error())
+		return err
 	}
 
 	if response.StatusCode == 401 {
@@ -201,14 +201,14 @@ func deleteJobs() error {
 
 	request, err := http.NewRequest("DELETE", JOBS_ADDRESS, nil)
 	if err != nil {
-		panic(err.Error())
+		return err
 	}
 
 	authenticateRequest(request)
 
 	response, err := client.Do(request)
 	if err != nil {
-		panic(err.Error())
+		return err
 	}
 
 	if response.StatusCode == 401 {

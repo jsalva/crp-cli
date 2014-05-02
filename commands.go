@@ -8,7 +8,7 @@ import (
 	"github.com/docopt/docopt.go"
 )
 
-func authCmd(argv []string) {
+func authCmd(argv []string) error {
 	var err error
 
 	usage := `Usage: crowdprocess auth login [<email>] [<password>]
@@ -16,7 +16,7 @@ func authCmd(argv []string) {
 `
 	authArgs, err := docopt.Parse(usage, argv, true, "crowdprocess "+VERSION, false)
 	if err != nil {
-		panic(err.Error())
+		return err
 	}
 
 	var username string
@@ -27,30 +27,30 @@ func authCmd(argv []string) {
 	if authArgs["login"].(bool) {
 		err = login(username, password)
 		if err != nil {
-			fmt.Println(err.Error())
-			return
+			return err
 		}
-		return
+		return nil
 	}
 
 	if authArgs["logout"].(bool) {
 		err = logout()
 		if err != nil {
-			fmt.Println(err.Error())
-			return
+			return err
 		}
-		return
+		return nil
 	}
+
+	return nil
 }
 
-func createCmd(argv []string) {
+func createCmd(argv []string) error {
 	var err error
 
 	usage := `Usage: crowdprocess create [--bid=<value>] [--group=<name>] <program> [<tasks> [<results>]]`
 
 	args, err := docopt.Parse(usage, argv, true, "crowdprocess "+VERSION, false)
 	if err != nil {
-		panic(err.Error())
+		return err
 	}
 
 	var bid string
@@ -60,8 +60,7 @@ func createCmd(argv []string) {
 
 	jobId, err := createJob(args["<program>"].(string), bid, group)
 	if err != nil {
-		fmt.Println(err.Error())
-		return
+		return err
 	}
 
 	fmt.Fprintf(os.Stderr, "Job id: %s\n", jobId)
@@ -79,7 +78,7 @@ func createCmd(argv []string) {
 	tasks, ok := args["<tasks>"].(string)
 	if !ok {
 		// no further action required
-		return
+		return nil
 	}
 
 	numTasks := 0
@@ -117,8 +116,7 @@ func createCmd(argv []string) {
 
 	numTasks, err = submitTasks(jobId, tasks, tasksChannel)
 	if err != nil {
-		fmt.Println(err.Error())
-		return
+		return err
 	}
 
 	for {
@@ -136,16 +134,18 @@ func createCmd(argv []string) {
 		}
 		fmt.Fprintf(os.Stderr, "\n")
 	}
+
+	return nil
 }
 
-func deleteCmd(argv []string) {
+func deleteCmd(argv []string) error {
 	var err error
 
 	usage := `Usage: crowdprocess delete [<job>]`
 
 	deleteArgs, err := docopt.Parse(usage, argv, true, "crowdprocess "+VERSION, false)
 	if err != nil {
-		panic(err.Error())
+		return err
 	}
 
 	jobId, ok := deleteArgs["<job>"].(string)
@@ -153,26 +153,26 @@ func deleteCmd(argv []string) {
 	if ok {
 		err = deleteJob(jobId)
 		if err != nil {
-			fmt.Println(err.Error())
-			return
+			return err
 		}
 	} else {
 		err = deleteJobs()
 		if err != nil {
-			fmt.Println(err.Error())
-			return
+			return err
 		}
 	}
+
+	return nil
 }
 
-func errorsCmd(argv []string) {
+func errorsCmd(argv []string) error {
 	var err error
 
 	usage := `Usage: crowdprocess errors <job> [<path>]`
 
 	errorsArgs, err := docopt.Parse(usage, argv, true, "crowdprocess "+VERSION, false)
 	if err != nil {
-		panic(err.Error())
+		return err
 	}
 
 	path, _ := errorsArgs["<path>"].(string)
@@ -198,22 +198,23 @@ func errorsCmd(argv []string) {
 	if showStatus {
 		fmt.Printf("Number of errors: %d\n", num)
 	}
+
+	return nil
 }
 
-func listCmd(argv []string) {
+func listCmd(argv []string) error {
 	var err error
 
 	usage := `Usage: crowdprocess list`
 
 	_, err = docopt.Parse(usage, argv, true, "crowdprocess "+VERSION, false)
 	if err != nil {
-		panic(err.Error())
+		return err
 	}
 
 	jobs, err := listJobs()
 	if err != nil {
-		fmt.Println(err.Error())
-		return
+		return err
 	}
 
 	fmt.Printf("%-36s   %-19s   %-8s   %-6s\n", "Id", "Created", "Tasks", "Status")
@@ -224,16 +225,18 @@ func listCmd(argv []string) {
 			job.Total,
 			job.Status)
 	}
+
+	return nil
 }
 
-func resultsCmd(argv []string) {
+func resultsCmd(argv []string) error {
 	var err error
 
 	usage := `Usage: crowdprocess results <job> [<path>]`
 
 	resultsArgs, err := docopt.Parse(usage, argv, true, "crowdprocess "+VERSION, false)
 	if err != nil {
-		panic(err.Error())
+		return err
 	}
 
 	path, _ := resultsArgs["<path>"].(string)
@@ -259,22 +262,23 @@ func resultsCmd(argv []string) {
 	if showStatus {
 		fmt.Printf("Number of results: %d\n", num)
 	}
+
+	return nil
 }
 
-func showCmd(argv []string) {
+func showCmd(argv []string) error {
 	var err error
 
 	usage := `Usage: crowdprocess show <job>`
 
 	showArgs, err := docopt.Parse(usage, argv, true, "crowdprocess "+VERSION, false)
 	if err != nil {
-		panic(err.Error())
+		return err
 	}
 
 	job, err := showJob(showArgs["<job>"].(string))
 	if err != nil {
-		fmt.Println(err.Error())
-		return
+		return err
 	}
 
 	fmt.Printf("%-13s %s\n", "Id", job.Id)
@@ -288,17 +292,21 @@ func showCmd(argv []string) {
 	fmt.Printf("%-13s %d\n", "Failed", job.Failed)
 	fmt.Printf("%-13s %d\n", "Finished", job.Finished)
 	fmt.Printf("%-13s %d\n", "Total", job.Total)
+
+	return nil
 }
 
-func uploadCmd(argv []string) {
+func uploadCmd(argv []string) error {
 	var err error
 
 	usage := `Usage: crowdprocess upload <job> <tasks>`
 
 	uploadArgs, err := docopt.Parse(usage, argv, true, "crowdprocess "+VERSION, false)
 	if err != nil {
-		panic(err.Error())
+		return err
 	}
 
 	submitTasks(uploadArgs["<job>"].(string), uploadArgs["<tasks>"].(string), nil)
+
+	return nil
 }

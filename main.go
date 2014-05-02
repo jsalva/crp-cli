@@ -49,7 +49,8 @@ func main() {
 
 	args, err := docopt.Parse(USAGE, nil, true, "crowdprocess "+VERSION, true)
 	if err != nil {
-		panic(err.Error())
+		fmt.Printf("Error: %s\n", err.Error())
+		os.Exit(-1)
 	}
 
 	cmd, _ := args["<command>"].(string)
@@ -70,24 +71,29 @@ func main() {
 
 	switch cmd {
 	case "auth":
-		authCmd(argv)
+		err = authCmd(argv)
 	case "create":
-		createCmd(argv)
+		err = createCmd(argv)
 	case "delete":
-		deleteCmd(argv)
+		err = deleteCmd(argv)
 	case "errors":
-		errorsCmd(argv)
+		err = errorsCmd(argv)
 	case "list":
-		listCmd(argv)
+		err = listCmd(argv)
 	case "results":
-		resultsCmd(argv)
+		err = resultsCmd(argv)
 	case "show":
-		showCmd(argv)
+		err = showCmd(argv)
 	case "upload":
-		uploadCmd(argv)
+		err = uploadCmd(argv)
 	case "":
 		fmt.Print(USAGE)
 	default:
 		fmt.Printf("crowdprocess: '%s' is not a crowdprocess command. See 'crowdprocess --help'.\n", cmd)
+	}
+
+	if err != nil {
+		fmt.Printf("Error: %s\n", err.Error())
+		os.Exit(-1)
 	}
 }

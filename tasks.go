@@ -25,7 +25,7 @@ func submitTasks(jobId string, tasksPath string, channel chan int) (int, error) 
 	if tasksPath != "" && tasksPath != "-" {
 		tasks, err = os.Open(tasksPath)
 		if err != nil {
-			panic(err.Error())
+			return 0, err
 		}
 	} else {
 		tasks = os.Stdin
@@ -34,21 +34,23 @@ func submitTasks(jobId string, tasksPath string, channel chan int) (int, error) 
 	reader, writer := io.Pipe()
 	num := 0
 
+	var goerr error
 	go func() {
+		defer writer.Close()
 		decoder := json.NewDecoder(tasks)
 		for {
 			task := new(json.RawMessage)
-			err = decoder.Decode(task)
-			if err != nil {
-				if err == io.EOF {
+			goerr = decoder.Decode(task)
+			if goerr != nil {
+				if goerr == io.EOF {
 					break
 				}
-				panic(err.Error())
+				return
 			}
 
-			_, err = writer.Write(append(*task, '\n'))
-			if err != nil {
-				panic(err.Error())
+			_, goerr = writer.Write(append(*task, '\n'))
+			if goerr != nil {
+				return
 			}
 
 			num++
@@ -57,22 +59,18 @@ func submitTasks(jobId string, tasksPath string, channel chan int) (int, error) 
 			default:
 			}
 		}
-		err = writer.Close()
-		if err != nil {
-			panic(err.Error())
-		}
 	}()
 
 	request, err := http.NewRequest("POST", address, reader)
 	if err != nil {
-		panic(err.Error())
+		return 0, err
 	}
 
 	authenticateRequest(request)
 
 	response, err := client.Do(request)
 	if err != nil {
-		panic(err.Error())
+		return 0, err
 	}
 
 	if response.StatusCode == 401 {
@@ -81,6 +79,10 @@ func submitTasks(jobId string, tasksPath string, channel chan int) (int, error) 
 
 	if response.StatusCode != 201 {
 		return 0, errors.New("Something went wrong")
+	}
+
+	if goerr != nil {
+		return num, goerr
 	}
 
 	return num, nil
@@ -96,7 +98,7 @@ func streamTaskResults(jobId string, resultsPath string, channel chan int) (int,
 	if resultsPath != "" && resultsPath != "-" {
 		results, err = os.Create(resultsPath)
 		if err != nil {
-			panic(err.Error())
+			return 0, err
 		}
 	} else {
 		results = os.Stdout
@@ -104,14 +106,14 @@ func streamTaskResults(jobId string, resultsPath string, channel chan int) (int,
 
 	request, err := http.NewRequest("GET", address, nil)
 	if err != nil {
-		panic(err.Error())
+		return 0, err
 	}
 
 	authenticateRequest(request)
 
 	response, err := client.Do(request)
 	if err != nil {
-		panic(err.Error())
+		return 0, err
 	}
 
 	if response.StatusCode == 401 {
@@ -131,12 +133,12 @@ func streamTaskResults(jobId string, resultsPath string, channel chan int) (int,
 			if err == io.EOF {
 				break
 			}
-			panic(err.Error())
+			return 0, err
 		}
 
 		_, err = results.Write(append(*result, '\n'))
 		if err != nil {
-			panic(err.Error())
+			return 0, err
 		}
 
 		num++
@@ -159,7 +161,7 @@ func streamTaskErrors(jobId string, errorsPath string, channel chan int) (int, e
 	if errorsPath != "" && errorsPath != "-" {
 		erros, err = os.Create(errorsPath)
 		if err != nil {
-			panic(err.Error())
+			return 0, err
 		}
 	} else {
 		erros = os.Stdout
@@ -167,14 +169,14 @@ func streamTaskErrors(jobId string, errorsPath string, channel chan int) (int, e
 
 	request, err := http.NewRequest("GET", address, nil)
 	if err != nil {
-		panic(err.Error())
+		return 0, err
 	}
 
 	authenticateRequest(request)
 
 	response, err := client.Do(request)
 	if err != nil {
-		panic(err.Error())
+		return 0, err
 	}
 
 	if response.StatusCode == 401 {
@@ -194,13 +196,13 @@ func streamTaskErrors(jobId string, errorsPath string, channel chan int) (int, e
 			if err == io.EOF {
 				break
 			}
-			panic(err.Error())
+			return 0, err
 		}
 
 		if errorsPath != "" {
 			_, err = erros.Write(append(*erro, '\n'))
 			if err != nil {
-				panic(err.Error())
+				return 0, err
 			}
 		}
 
@@ -224,7 +226,7 @@ func getResults(jobId string, resultsPath string, channel chan int) (int, error)
 	if resultsPath != "" && resultsPath != "-" {
 		results, err = os.Create(resultsPath)
 		if err != nil {
-			panic(err.Error())
+			return 0, err
 		}
 	} else {
 		results = os.Stdout
@@ -232,14 +234,14 @@ func getResults(jobId string, resultsPath string, channel chan int) (int, error)
 
 	request, err := http.NewRequest("GET", address, nil)
 	if err != nil {
-		panic(err.Error())
+		return 0, err
 	}
 
 	authenticateRequest(request)
 
 	response, err := client.Do(request)
 	if err != nil {
-		panic(err.Error())
+		return 0, err
 	}
 
 	if response.StatusCode == 401 {
@@ -261,12 +263,12 @@ func getResults(jobId string, resultsPath string, channel chan int) (int, error)
 				break
 			}
 
-			panic(err.Error())
+			return 0, err
 		}
 
 		_, err = results.Write(append(*data, '\n'))
 		if err != nil {
-			panic(err.Error())
+			return 0, err
 		}
 
 		num++
@@ -289,7 +291,7 @@ func getErrors(jobId string, errorsPath string, channel chan int) (int, error) {
 	if errorsPath != "" && errorsPath != "-" {
 		erros, err = os.Create(errorsPath)
 		if err != nil {
-			panic(err.Error())
+			return 0, err
 		}
 	} else {
 		erros = os.Stdout
@@ -297,14 +299,14 @@ func getErrors(jobId string, errorsPath string, channel chan int) (int, error) {
 
 	request, err := http.NewRequest("GET", address, nil)
 	if err != nil {
-		panic(err.Error())
+		return 0, err
 	}
 
 	authenticateRequest(request)
 
 	response, err := client.Do(request)
 	if err != nil {
-		panic(err.Error())
+		return 0, err
 	}
 
 	if response.StatusCode == 401 {
@@ -326,12 +328,12 @@ func getErrors(jobId string, errorsPath string, channel chan int) (int, error) {
 				break
 			}
 
-			panic(err.Error())
+			return 0, err
 		}
 
 		_, err = erros.Write(append(*data, '\n'))
 		if err != nil {
-			panic(err.Error())
+			return 0, err
 		}
 
 		num++

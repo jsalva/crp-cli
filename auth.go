@@ -23,13 +23,13 @@ func login(username, password string) error {
 	if username == "" {
 		_, err = fmt.Print("Email: ")
 		if err != nil {
-			panic(err.Error())
+			return err
 		}
 
 		var user string
 		_, err = fmt.Scanln(&user)
 		if err != nil {
-			panic(err.Error())
+			return err
 		}
 		username = user
 	}
@@ -42,14 +42,14 @@ func login(username, password string) error {
 
 	request, err := http.NewRequest("POST", AUTH_ADDRESS, nil)
 	if err != nil {
-		panic(err.Error())
+		return err
 	}
 
 	request.SetBasicAuth(username, password)
 
 	response, err := client.Do(request)
 	if err != nil {
-		panic(err.Error())
+		return err
 	}
 
 	if response.StatusCode == 401 {
@@ -66,17 +66,17 @@ func login(username, password string) error {
 	decoder := json.NewDecoder(response.Body)
 	err = decoder.Decode(&token)
 	if err != nil {
-		panic(err.Error())
+		return err
 	}
 
 	err = os.MkdirAll(path.Join(getUserHomeDir(), "/.crowdprocess"), 0755)
 	if err != nil {
-		panic(err.Error())
+		return err
 	}
 
 	err = ioutil.WriteFile(getTokenDir(), []byte(token.Id), 0600)
 	if err != nil {
-		panic(err.Error())
+		return err
 	}
 
 	return nil
@@ -94,14 +94,14 @@ func logout() error {
 
 	request, err := http.NewRequest("DELETE", AUTH_ADDRESS+"/"+string(token), nil)
 	if err != nil {
-		panic(err.Error())
+		return err
 	}
 
 	authenticateRequest(request)
 
 	response, err := client.Do(request)
 	if err != nil {
-		panic(err.Error())
+		return err
 	}
 
 	if response.StatusCode == 401 {
@@ -114,7 +114,7 @@ func logout() error {
 
 	err = os.Remove(tokenDir)
 	if err != nil {
-		panic(err.Error())
+		return err
 	}
 
 	return nil
