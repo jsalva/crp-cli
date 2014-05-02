@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"math"
 	"os"
 	"time"
 
@@ -292,6 +293,7 @@ func showCmd(argv []string) error {
 	fmt.Printf("%-13s %d\n", "Failed", job.Failed)
 	fmt.Printf("%-13s %d\n", "Finished", job.Finished)
 	fmt.Printf("%-13s %d\n", "Total", job.Total)
+	fmt.Printf("%-13s %d\n", "Speedup", int(math.Ceil(float64(job.BrowserHours) / float64((job.LastResult.Sub(job.Created).Nanoseconds() / 1000000)))))
 
 	return nil
 }

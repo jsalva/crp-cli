@@ -24,6 +24,7 @@ type Job struct {
 	Failed       int
 	Finished     int
 	Total        int
+	LastResult   time.Time
 }
 
 func createJob(programPath string, bid string, group string) (string, error) {
