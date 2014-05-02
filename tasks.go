@@ -77,6 +77,10 @@ func submitTasks(jobId string, tasksPath string, channel chan int) (int, error) 
 		return 0, errors.New("Authentication failed")
 	}
 
+	if response.StatusCode == 404 {
+		return 0, errors.New("Job not found")
+	}
+
 	if response.StatusCode != 201 {
 		return 0, errors.New("Something went wrong")
 	}
@@ -118,6 +122,10 @@ func streamTaskResults(jobId string, resultsPath string, channel chan int) (int,
 
 	if response.StatusCode == 401 {
 		return 0, errors.New("Authentication failed")
+	}
+
+	if response.StatusCode == 404 {
+		return 0, errors.New("Job not found")
 	}
 
 	if response.StatusCode != 200 {
@@ -181,6 +189,10 @@ func streamTaskErrors(jobId string, errorsPath string, channel chan int) (int, e
 
 	if response.StatusCode == 401 {
 		return 0, errors.New("Authentication failed")
+	}
+
+	if response.StatusCode == 404 {
+		return 0, errors.New("Job not found")
 	}
 
 	if response.StatusCode != 200 {
@@ -248,6 +260,10 @@ func getResults(jobId string, resultsPath string, channel chan int) (int, error)
 		return 0, errors.New("Authentication failed")
 	}
 
+	if response.StatusCode == 404 {
+		return 0, errors.New("Job not found")
+	}
+
 	if response.StatusCode != 200 {
 		return 0, errors.New("Something went wrong")
 	}
@@ -311,6 +327,10 @@ func getErrors(jobId string, errorsPath string, channel chan int) (int, error) {
 
 	if response.StatusCode == 401 {
 		return 0, errors.New("Authentication failed")
+	}
+
+	if response.StatusCode == 404 {
+		return 0, errors.New("Job not found")
 	}
 
 	if response.StatusCode != 200 {

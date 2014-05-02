@@ -49,7 +49,7 @@ func main() {
 
 	args, err := docopt.Parse(USAGE, nil, true, "crowdprocess "+VERSION, true)
 	if err != nil {
-		fmt.Printf("Error: %s\n", err.Error())
+		fmt.Println(err.Error())
 		os.Exit(-1)
 	}
 
@@ -93,7 +93,7 @@ func main() {
 	}
 
 	if err != nil {
-		fmt.Printf("Error: %s\n", err.Error())
+		fmt.Println(err.Error())
 		os.Exit(-1)
 	}
 }

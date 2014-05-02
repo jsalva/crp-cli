@@ -156,6 +156,10 @@ func showJob(id string) (*Job, error) {
 		return nil, errors.New("Authentication failed")
 	}
 
+	if response.StatusCode == 404 {
+		return nil, errors.New("Job not found")
+	}
+
 	if response.StatusCode != 200 {
 		return nil, errors.New("Something went wrong")
 	}
@@ -188,6 +192,10 @@ func deleteJob(id string) error {
 
 	if response.StatusCode == 401 {
 		return errors.New("Authentication failed")
+	}
+
+	if response.StatusCode == 404 {
+		return errors.New("Job not found")
 	}
 
 	if response.StatusCode != 204 {
